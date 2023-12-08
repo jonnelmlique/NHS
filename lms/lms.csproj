@@ -235,6 +235,33 @@
     <Content Include="Professor\editAnnouncement.aspx" />
     <Content Include="Professor\viewClasswork.aspx" />
     <Content Include="Professor\WriteEmail.aspx" />
+    <Content Include="sis\css\bootstrap-grid.css" />
+    <Content Include="sis\css\bootstrap-grid.min.css" />
+    <Content Include="sis\css\bootstrap-grid.rtl.css" />
+    <Content Include="sis\css\bootstrap-grid.rtl.min.css" />
+    <Content Include="sis\css\bootstrap-reboot.css" />
+    <Content Include="sis\css\bootstrap-reboot.min.css" />
+    <Content Include="sis\css\bootstrap-reboot.rtl.css" />
+    <Content Include="sis\css\bootstrap-reboot.rtl.min.css" />
+    <Content Include="sis\css\bootstrap-utilities.css" />
+    <Content Include="sis\css\bootstrap-utilities.min.css" />
+    <Content Include="sis\css\bootstrap-utilities.rtl.css" />
+    <Content Include="sis\css\bootstrap-utilities.rtl.min.css" />
+    <Content Include="sis\css\bootstrap.css" />
+    <Content Include="sis\css\bootstrap.min.css" />
+    <Content Include="sis\css\bootstrap.rtl.css" />
+    <Content Include="sis\css\bootstrap.rtl.min.css" />
+    <Content Include="sis\css\site.css" />
+    <Content Include="sis\images\cat.PNG" />
+    <Content Include="sis\Resources\cat.PNG" />
+    <Content Include="sis\Resources\default.jpg" />
+    <Content Include="sis\Resources\NH-LOGO.png" />
+    <Content Include="sis\Resources\NH_BACKGROUND.jpeg" />
+    <Content Include="sis\scripts\ai.0.22.9-build00167.js" />
+    <Content Include="sis\scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="sis\SISPAGES\Admin.aspx" />
+    <Content Include="sis\SISPAGES\StudentManagement.aspx" />
+    <Content Include="sis\Styles\sweetalert.css" />
     <Content Include="Student\ArchivedClasses.aspx" />
     <Content Include="Student\Classworks.aspx" />
     <Content Include="Student\DashBoard.aspx" />
@@ -615,6 +642,21 @@
       <DependentUpon>AdminLayout.Master</DependentUpon>
     </Compile>
     <Compile Include="RouteConfig.cs" />
+    <Compile Include="sis\SISPAGES\Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\ConnectionClass.cs" />
+    <Compile Include="sis\SISPAGES\StudentManagement.aspx.cs">
+      <DependentUpon>StudentManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\StudentManagement.aspx.designer.cs">
+      <DependentUpon>StudentManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Student\ArchivedClasses.aspx.cs">
       <DependentUpon>ArchivedClasses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -15,15 +15,15 @@ namespace lms.Student
 
             if (!IsPostBack)
             {
-                if (Session["LoggedInUserEmail"] == null)
+                if (Session["LoggedInUser"] == null)
                 {
                     Response.Redirect("~/Account/Login.aspx");
                 }
                 else
                 {
-                    string userType = Session["LoggedInUserType"] as string;
+                    string userType = Session["Role"] as string;
 
-                    if (userType == "professor")
+                    if (userType == "teacher")
                     {
                         Response.Redirect("~/Professor/DashBoard.aspx");
                     }
@@ -33,7 +33,7 @@ namespace lms.Student
                     }
                     else
                     {
-                        string userEmail = Session["LoggedInUserEmail"] as string;
+                        string userEmail = Session["LoggedInUser"] as string;
 
                         if (!string.IsNullOrEmpty(userEmail))
                         {

@@ -96,7 +96,7 @@
                      <div class="information">
                          
                          <div class="info-lbl">
-                             <asp:Label ID="Label1" runat="server" Text="First Name" CssClass="info-label"></asp:Label>
+                             <asp:Label ID="Label1" runat="server" Text="Full Name" CssClass="info-label"></asp:Label>
                          </div>
                          <div class="info-txt">
                              <asp:TextBox ID="TextBox1" runat="server" CssClass="info-text" Enabled="False"></asp:TextBox>
@@ -104,7 +104,7 @@
                      </div>
                       <div class="information">
                           <div class="info-lbl">
-                                <asp:Label ID="Label2" runat="server" Text="Last Name" CssClass="info-label"></asp:Label>
+                                <asp:Label ID="Label2" runat="server" Text="Citzenship" CssClass="info-label"></asp:Label>
                           </div>
                            <div class="info-txt">
                                    <asp:TextBox ID="TextBox2" runat="server" CssClass="info-text" Enabled="False"></asp:TextBox>
@@ -120,7 +120,7 @@
                     </div>
                       <div class="information">
                              <div class="info-lbl">
-                                  <asp:Label ID="Label4" runat="server" Text="Age" CssClass="info-label"></asp:Label>
+                                  <asp:Label ID="Label4" runat="server" Text="Address" CssClass="info-label"></asp:Label>
                               </div>
                        <div class="info-txt">
                           <asp:TextBox ID="TextBox4" runat="server" CssClass="info-text" Enabled="False"></asp:TextBox>
@@ -137,7 +137,7 @@
                          <div class="information">
                                <div class="info-lbl">
                                     <asp:Label ID="Label6" runat="server" Text="Email" CssClass="info-label"></asp:Label>
-                              </div>
+                              </divf
                            <div class="info-txt">
                                   <asp:TextBox ID="TextBox9" runat="server" CssClass="info-text" Enabled="False"></asp:TextBox>
                           </div>
