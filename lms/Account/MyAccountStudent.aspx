@@ -45,19 +45,11 @@
             </div>
             <div class="item">
                 <a href="#"> <i class='bx bxs-user-circle'></i>My Account</a>
-
             </div>
-     
             <div class="item">
                 <a href="../Professor/DashBoard.aspx" class="sub-btn" ><i class="fas fa-sign-out-alt"></i>Go to DashBoard</a>
-                
             </div>
-           
-
-          
         </div>
-
-        
     </div>
 
         <main class="content">

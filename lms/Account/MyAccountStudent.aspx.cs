@@ -51,7 +51,7 @@ namespace lms.Account
                             }
 
                             DisplayTeacherProfileInfo(userEmail);
-                            DisplayUploadedImage(UserID);
+                            //DisplayUploadedImage(UserID);
 
                         }
                     }
