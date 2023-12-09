@@ -43,10 +43,10 @@ namespace lms.Student
                                 }
                             }
                         }
-                        if (Session["LoggedInUserID"] != null)
-                        {
-                            lblUserId.Text = Session["LoggedInUserID"].ToString();
-                        }
+                        //if (Session["LoggedInUserID"] != null)
+                        //{
+                        //    lblUserId.Text = Session["LoggedInUserID"].ToString();
+                        //}
                     }
                 }
             }

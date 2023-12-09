@@ -38,10 +38,10 @@ namespace lms.Professor
             DisplayAnnouncements();
 
 
-              if (Session["LoggedInUserID"] != null)
-        {
-            lblUserId.Text = Session["LoggedInUserID"].ToString();
-        }
+        //      if (Session["LoggedInUserID"] != null)
+        //{
+        //    lblUserId.Text = Session["LoggedInUserID"].ToString();
+        //}
         }
 
         protected void btncreatepost_Click(object sender, EventArgs e)
