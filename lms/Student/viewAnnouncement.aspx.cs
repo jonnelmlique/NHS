@@ -25,7 +25,7 @@ namespace lms.Student
                         DisplayUserProfileImage();
                         DisplayComment();
 
-                        string UserID = Session["ID"] as string;
+                        string UserID = Session["LoggedInUserID"] as string;
 
                         if (!string.IsNullOrEmpty(UserID))
                         {
@@ -123,7 +123,36 @@ namespace lms.Student
                 Response.Redirect("~Account/Login.aspx");
             }
         }
-        private byte[] GetUserProfileImage(string userID)
+        //private byte[] GetUserProfileImage(string userID)
+        //{
+        //    string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+        //    using (MySqlConnection connection = new MySqlConnection(connectionString))
+        //    {
+        //        string query = "SELECT ImageData FROM tblimages WHERE studentId = @studentID";
+
+        //        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+        //        {
+        //            cmd.Parameters.AddWithValue("@studentID", userID);
+        //            connection.Open();
+
+        //            using (MySqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    if (!(reader["ImageData"] is DBNull))
+        //                    {
+        //                        return (byte[])reader["ImageData"];
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        private byte[] GetUserProfileImage(string UserID)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
@@ -133,7 +162,7 @@ namespace lms.Student
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@studentID", userID);
+                    cmd.Parameters.AddWithValue("@studentID", UserID);
                     connection.Open();
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -238,6 +267,7 @@ namespace lms.Student
                 {
                     int studentId = Convert.ToInt32(Session["LoggedInUserID"]);
                     string studentemail = Session["LoggedInUserEmail"].ToString();
+                    string UserID = Session["LoggedInUserID"] as string;
 
                     string commentpost = txtcomment.Text;
 
@@ -268,7 +298,7 @@ namespace lms.Student
                                             string fullname = nameReader["name"].ToString();
                                             nameReader.Close();
 
-                                            byte[] imageData = GetUserProfileImage(studentemail);
+                                            byte[] imageData = GetUserProfileImage(UserID);
 
                                             string insertQuery = "INSERT INTO comment (announcementid, roomid, teacheremail, studentemail, name, profileimage, commentpost, datepost) " +
                                                                  "VALUES (@announcementid, @roomid,  @teacheremail, @studentemail, @name, @profileimage, @commentpost, @datepost)";
@@ -280,7 +310,8 @@ namespace lms.Student
                                                 commandInsert.Parameters.AddWithValue("@teacheremail", teacheremail);
                                                 commandInsert.Parameters.AddWithValue("@studentemail", studentemail);
                                                 commandInsert.Parameters.AddWithValue("@name", fullname);
-                                                commandInsert.Parameters.AddWithValue("@profileimage", imageData);
+                                                byte[] profileImage = GetUserProfileImage(UserID);
+                                                commandInsert.Parameters.AddWithValue("@profileimage", profileImage);
                                                 commandInsert.Parameters.AddWithValue("@commentpost", commentpost);
                                                 commandInsert.Parameters.AddWithValue("@datepost", currentDate);
 

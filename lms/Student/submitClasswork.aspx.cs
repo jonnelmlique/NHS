@@ -33,7 +33,7 @@ namespace lms.Student
                         //PopulateFileDropdown(roomId, materialsId);
                         //ddlFiles.Enabled = false;
 
-                        string UserID = Session["ID"] as string;
+                        string UserID = Session["LoggedInUserID"] as string;
 
                         if (!string.IsNullOrEmpty(UserID))
                         {
@@ -175,6 +175,7 @@ namespace lms.Student
             {
                 int studentId = Convert.ToInt32(Session["LoggedInUserID"]);
                 string studentemail = Session["LoggedInUserEmail"].ToString();
+                string UserID = Session["LoggedInUserID"] as string;
 
                 string commentpost = txtcomment.Text;
 
@@ -192,7 +193,7 @@ namespace lms.Student
                         {
                             con.Open();
 
-                            string retrieveStudentNameQuery = "SELECT firstname, lastname FROM student_Info WHERE email = @studentemail";
+                            string retrieveStudentNameQuery = "SELECT name FROM student_Info WHERE email = @studentemail";
 
                             using (MySqlCommand retrieveNameCommand = new MySqlCommand(retrieveStudentNameQuery, con))
                             {
@@ -202,11 +203,11 @@ namespace lms.Student
                                 {
                                     if (nameReader.Read())
                                     {
-                                        string studentFirstName = nameReader["firstname"].ToString();
-                                        string studentLastName = nameReader["lastname"].ToString();
-                                        string studentFullName = $"{studentFirstName} {studentLastName}";
+                                        string fullname = nameReader["name"].ToString();
+                                 
 
                                         nameReader.Close();
+                                        byte[] imageData = GetUserProfileImage(UserID);
 
                                         string insertQuery = "INSERT INTO materialscomment (materialsid, roomid, teacheremail, studentemail, name, profileimage, commentpost, datepost) " +
                                                              "VALUES (@materialsid, @roomid,  @teacheremail, @studentemail, @name, @profileimage, @commentpost, @datepost)";
@@ -217,9 +218,9 @@ namespace lms.Student
                                             commandInsert.Parameters.AddWithValue("@roomid", roomIdFromQueryString);
                                             commandInsert.Parameters.AddWithValue("@teacheremail", teacheremail);
                                             commandInsert.Parameters.AddWithValue("@studentemail", studentemail);
-                                            commandInsert.Parameters.AddWithValue("@name", studentFullName);
+                                            commandInsert.Parameters.AddWithValue("@name", fullname);
 
-                                            byte[] profileImage = GetUserProfileImage(studentemail);
+                                            byte[] profileImage = GetUserProfileImage(UserID);
                                             commandInsert.Parameters.AddWithValue("@profileimage", profileImage);
 
                                             commandInsert.Parameters.AddWithValue("@commentpost", commentpost);
@@ -280,7 +281,7 @@ namespace lms.Student
             }
         }
 
-        private byte[] GetUserProfileImage(string userID)
+        private byte[] GetUserProfileImage(string UserID)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
@@ -290,7 +291,7 @@ namespace lms.Student
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@studentID", userID);
+                    cmd.Parameters.AddWithValue("@studentID", UserID);
                     connection.Open();
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
