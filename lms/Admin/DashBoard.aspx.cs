@@ -94,7 +94,7 @@ namespace lms.Admin
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
                     con.Open();
-                    string query = "SELECT COUNT(*) FROM notification WHERE DATE(date) = CURDATE() AND receiver = @loggedInUserEmail";
+                    string query = "SELECT COUNT(*) FROM lmsnotification WHERE DATE(date) = CURDATE() AND receiver = @loggedInUserEmail";
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@loggedInUserEmail", loggedInUserEmail);

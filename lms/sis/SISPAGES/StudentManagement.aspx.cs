@@ -19,20 +19,24 @@ namespace lms.sis.SISPAGES
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Image1.ImageUrl = "Resources/default.jpg";
+            Image1.ImageUrl = "/sis/Resources/default.jpg";
 
         }
         protected void SMadd_Click(object sender, EventArgs e)
         {
+            //new add emailcheack
             Random random = new Random();
             int randomDigits = random.Next(1000, 9999);
             string fullname = $"{fname.Text} {mname.Text} {Surname.Text}";
+
             if (string.IsNullOrWhiteSpace(fname.Text) || string.IsNullOrWhiteSpace(Surname.Text) || string.IsNullOrWhiteSpace(Email.Text) || string.IsNullOrWhiteSpace(Contact.Text) || string.IsNullOrWhiteSpace(IEcontact.Text))
             {
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "error", "swal('Something went wrong...','Please fill out all the fields ','error')", true);
                 return;
             }
+
             ConnectionClass conn = new ConnectionClass();
+
             using (MySqlConnection connection = conn.GetConnection())
             {
                 connection.Open();
@@ -40,11 +44,25 @@ namespace lms.sis.SISPAGES
 
                 try
                 {
+                    string checkEmailQuery = "SELECT COUNT(*) FROM manageuser WHERE Email = @Email";
+                    using (MySqlCommand checkEmailCommand = new MySqlCommand(checkEmailQuery, connection))
+                    {
+                        checkEmailCommand.Parameters.AddWithValue("@Email", Email.Text);
+                        int emailCount = Convert.ToInt32(checkEmailCommand.ExecuteScalar());
+
+                        if (emailCount > 0)
+                        {
+                            ClientScript.RegisterClientScriptBlock(this.GetType(), "error", "swal('Email already exists.','Please choose a different email address.','error')", true);
+                            return;
+                        }
+                    }
+
                     UploadFiles(connection, transaction, randomDigits);
                     InsertStudentInfo(connection, transaction, randomDigits, fullname);
                     InsertEmergencyContact(connection, transaction, randomDigits);
                     InsertUser(connection, transaction, randomDigits, fullname);
                     transaction.Commit();
+
                     ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Good job!','Recorded!', 'success')", true);
                     ClearInputValues(this);
                 }
@@ -60,6 +78,43 @@ namespace lms.sis.SISPAGES
                 }
             }
         }
+        //old
+        //    Random random = new Random();
+        //    int randomDigits = random.Next(1000, 9999);
+        //    string fullname = $"{fname.Text} {mname.Text} {Surname.Text}";
+        //    if (string.IsNullOrWhiteSpace(fname.Text) || string.IsNullOrWhiteSpace(Surname.Text) || string.IsNullOrWhiteSpace(Email.Text) || string.IsNullOrWhiteSpace(Contact.Text) || string.IsNullOrWhiteSpace(IEcontact.Text))
+        //    {
+        //        ClientScript.RegisterClientScriptBlock(this.GetType(), "error", "swal('Something went wrong...','Please fill out all the fields ','error')", true);
+        //        return;
+        //    }
+        //    ConnectionClass conn = new ConnectionClass();
+        //    using (MySqlConnection connection = conn.GetConnection())
+        //    {
+        //        connection.Open();
+        //        MySqlTransaction transaction = connection.BeginTransaction();
+
+        //        try
+        //        {
+        //            UploadFiles(connection, transaction, randomDigits);
+        //            InsertStudentInfo(connection, transaction, randomDigits, fullname);
+        //            InsertEmergencyContact(connection, transaction, randomDigits);
+        //            InsertUser(connection, transaction, randomDigits, fullname);
+        //            transaction.Commit();
+        //            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Good job!','Recorded!', 'success')", true);
+        //            ClearInputValues(this);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            transaction.Rollback();
+        //            ClientScript.RegisterClientScriptBlock(this.GetType(), "error", "swal('Something went wrong...','Files Missing','error')", true);
+        //        }
+        //        finally
+        //        {
+        //            connection.Close();
+        //            connection.Dispose();
+        //        }
+        //    }
+        //}
 
         private void UploadFiles(MySqlConnection connection, MySqlTransaction transaction, int randomDigits)
         {

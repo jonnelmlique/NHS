@@ -37,7 +37,7 @@ namespace lms.Admin
                 {
                     con.Open();
                     string query = "SELECT notifid, subject, date " +
-                     "FROM notification " +
+                     "FROM lmsnotification " +
                      "WHERE receiver = @receiver " +
                      "ORDER BY date DESC";
 

@@ -26,7 +26,7 @@ namespace lms.Student
                         PopulateFileGridView(roomId, materialsId);
                         DisplayUserProfileImage();
                         DisplayComment();
-
+                        DisplayPoints(roomId, materialsId);
 
 
                         PopulateFileGridView1(roomId, materialsId);
@@ -86,9 +86,12 @@ namespace lms.Student
                                 lblpost.Text = $"{materialsName} - {reader["posttype"].ToString()}"; lbldateposted.Text = reader["dateposted"].ToString();
                                 lblteacher.Text = reader["teachername"].ToString();
                                 lblinstructions.Text = reader["instructions"].ToString();
+                                // lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
+                                //? string.Empty
+                                //  : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
-                               ? string.Empty
-                                 : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
+                               ? "No Due"
+                               : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lblpoints.Text = reader["points"].ToString();
 
 
@@ -102,6 +105,46 @@ namespace lms.Student
                 ShowErrorMessage("An error occurred while retrieving learningmaterials.");
             }
         }
+
+
+        private void DisplayPoints(int roomId, int materialsId)
+        {
+            try
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string query = "SELECT materialsid, points, gradestatus FROM studentwork " +
+                                   "WHERE roomid = @roomid AND materialsid = @materialsid";
+
+                    using (MySqlCommand command = new MySqlCommand(query, con))
+                    {
+                        command.Parameters.AddWithValue("@roomid", roomId);
+                        command.Parameters.AddWithValue("@materialsid", materialsId);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                lblgradepoints.Text = reader["points"].ToString();
+                                lblstatus.Text = reader["gradestatus"].ToString().ToUpper();
+
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("An error occurred while retrieving learningmaterials.");
+            }
+        }
+
         private void ShowErrorMessage(string message)
         {
             string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";

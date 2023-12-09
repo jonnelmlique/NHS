@@ -189,7 +189,7 @@
                                 <div class="col-lg-6 d-flex">
                                     <span class="justify-self-center align-self-center" style="margin-right: 4px">Email</span>
                                    <%-- <input type="email" class="form-control w-100" name="email" placeholder="Email" />--%>
-                                    <asp:TextBox ID="Email" runat="server" CssClass="form-control w-100" placeholder="Email"></asp:TextBox>
+                                    <asp:TextBox ID="Email" runat="server" CssClass="form-control w-100" placeholder="Email" TextMode="Email"></asp:TextBox>
                                 </div>
 
                                 <div class="col-lg-6 d-flex">

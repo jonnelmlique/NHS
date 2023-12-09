@@ -193,7 +193,7 @@
                     <div class="row mt-2">
                         <div class="col-lg-6 d-flex align-items-center">
                             <label for="MUemail" class="text-uppercase">Email</label>
-                            <asp:TextBox ID="MUemail" runat="server" CssClass="form-control w-100 mx-2"></asp:TextBox>
+                            <asp:TextBox ID="MUemail" runat="server" CssClass="form-control w-100 mx-2" TextMode="Email"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row mt-2">
