@@ -98,15 +98,14 @@ namespace lms.Student
                                             cmd.Parameters.AddWithValue("@Date", DateTime.Now);
 
                                             cmd.ExecuteNonQuery();
-                                            ShowSuccessMessage("Your email was sent");
-                                            txtsubject.Text = "";
-                                            txtMessage.Text = "";
-                                            emailtxt.Text = "";
                                         }
                                     }
 
 
-                                
+                                    ShowSuccessMessage("Your email was sent");
+                                    txtsubject.Text = "";
+                                    txtMessage.Text = "";
+                                    emailtxt.Text = "";
                                 }
                             }
                             else
