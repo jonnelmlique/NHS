@@ -185,11 +185,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Account\AcademicCalendar.aspx" />
+    <Content Include="Account\Announce.aspx" />
     <Content Include="Account\Forgot_Password.aspx" />
+    <Content Include="Account\Grades.aspx" />
     <Content Include="Account\Logout.aspx" />
     <Content Include="Account\MyAccountProf.aspx" />
     <Content Include="Account\MyAccountStudent.aspx" />
     <Content Include="Account\Reset_Password.aspx" />
+    <Content Include="Account\StudentReg.aspx" />
     <Content Include="Admin\AddStudent.aspx" />
     <Content Include="Admin\AddTeacher.aspx" />
     <Content Include="Admin\DashBoard.aspx" />
@@ -217,6 +221,7 @@
     <Content Include="CSS\AdminCSS\roomDetails.css" />
     <Content Include="CSS\AdminCSS\subDetails.css" />
     <Content Include="CSS\AdminCSS\userReports.css" />
+    <Content Include="CSS\Announce.css" />
     <Content Include="CSS\login.css" />
     <Content Include="CSS\myAccountProf.css" />
     <Content Include="CSS\ProfessorCSS\announcement.css" />
@@ -244,6 +249,7 @@
     <Content Include="CSS\ProfessorCSS\stream.css" />
     <Content Include="CSS\ProfessorCSS\studentInvite.css" />
     <Content Include="CSS\ProfessorCSS\viewClasswork.css" />
+    <Content Include="CSS\studentReg.css" />
     <Content Include="CSS\Student\classInvitation.css" />
     <Content Include="CSS\Student\classSubjects.css" />
     <Content Include="CSS\Student\DashBoard.css" />
@@ -369,12 +375,33 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AcademicCalendar.aspx.cs">
+      <DependentUpon>AcademicCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\AcademicCalendar.aspx.designer.cs">
+      <DependentUpon>AcademicCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Announce.aspx.cs">
+      <DependentUpon>Announce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Announce.aspx.designer.cs">
+      <DependentUpon>Announce.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\Forgot_Password.aspx.cs">
       <DependentUpon>Forgot_Password.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Forgot_Password.aspx.designer.cs">
       <DependentUpon>Forgot_Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Grades.aspx.cs">
+      <DependentUpon>Grades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Grades.aspx.designer.cs">
+      <DependentUpon>Grades.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account\Logout.aspx.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
@@ -403,6 +430,13 @@
     </Compile>
     <Compile Include="Account\Reset_Password.aspx.designer.cs">
       <DependentUpon>Reset_Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\StudentReg.aspx.cs">
+      <DependentUpon>StudentReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\StudentReg.aspx.designer.cs">
+      <DependentUpon>StudentReg.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\AddStudent.aspx.cs">
       <DependentUpon>AddStudent.aspx</DependentUpon>

@@ -43,9 +43,21 @@
                 <asp:Label ID="lblUserEmail" runat="server" Text="" CssClass="admin-label"></asp:Label>
              
             </div>
+             <div class="item">
+                  <a href="Announce.aspx" class="sub-btn" ><i class="fas fa-bell"></i>Reminders</a>
+             </div>        
+              <div class="item">
+                  <a href="AcademicCalendar.aspx" class="sub-btn" ><i class="fas fa-calendar"></i>Academic Calendar</a>
+              </div>
+             <div class="item">
+                  <a href="StudentReg.aspx" class="sub-btn" ><i class="fas fa-registered"></i>Student Registration</a>
+                </div>
             <div class="item">
-                <a href="#"> <i class='bx bxs-user-circle'></i>My Account</a>
-            </div>
+    <a href="Grades.aspx"><i class="fas fa-star"></i>View Grades</a>
+ </div>
+              <div class="item">
+                  <a href="MyAccountStudent.aspx"> <i class='bx bxs-user-circle'></i>My Account</a>
+             </div>
             <div class="item">
                 <a href="../Student/DashBoard.aspx" class="sub-btn" ><i class="fas fa-sign-out-alt"></i>Go to DashBoard</a>
             </div>

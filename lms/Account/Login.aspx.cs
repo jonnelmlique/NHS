@@ -97,7 +97,7 @@ namespace lms.LOGIN
                     }
 
                     // If no matching user is found in either table, throw an exception
-                    throw new Exception("User not found or invalid credentials");
+                    throw new    Exception("User not found or invalid credentials");
                 }
             }
             catch (Exception ex)

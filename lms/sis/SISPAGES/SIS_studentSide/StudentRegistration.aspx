@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
 </head>
 <body>
     <div class="row m-0 p-0 bg-danger">
@@ -266,7 +267,7 @@
         </div>
 
     </div>
-    </div>
+ 
 
 <div class="modal fade" id="regFormModal" tabindex="-1" role="dialog" aria-labelledby="regFormModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
