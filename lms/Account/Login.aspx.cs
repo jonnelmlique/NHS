@@ -44,8 +44,8 @@ namespace lms.LOGIN
                             if (manageuserReader.Read())
                             {
                    {
-                                    string roles = manageuserReader.GetString("Role");
-                                    string role = manageuserReader.GetString("Role");
+                                string roles = manageuserReader.GetString("Role");
+                                string role = manageuserReader.GetString("Role");
                                 Session["Role"] = role;
                                 Session["ID"] = manageuserReader.GetString("UserID");
                                 Session["LoggedInUserEmail"] = un;
@@ -155,6 +155,8 @@ namespace lms.LOGIN
                         if (studentInfoReader.Read())
                         {
                             Session["studentname"] = studentInfoReader.GetString("name");
+                            Session["Name"] = studentInfoReader.GetString("name");
+
                             Session["studentemail"] = studentInfoReader.GetString("email");
                             Session["LoggedInUserID"] = studentInfoReader.GetInt32("studentid").ToString();
                         }
