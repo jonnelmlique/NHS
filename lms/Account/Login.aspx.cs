@@ -35,10 +35,13 @@ namespace lms.LOGIN
                             Session["Role"] = role;
                             Session["Name"] = dr.GetString("Name");
                             Session["ID"] = dr.GetString("UserID");
+                             Session["LoggedInUserEmail"] = un;
+
 
                             if (role == "Student")
                             {
                                 Session["LoggedInUser"] = un;
+
                                 Response.Redirect("/Student/DashBoard.aspx");
                             }
                             if (role == "Admin")

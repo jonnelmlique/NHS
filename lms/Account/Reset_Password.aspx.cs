@@ -73,7 +73,7 @@ namespace lms.Account
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 con.Open();
-                string query = $"SELECT TokenExpiration FROM users WHERE ResetToken = @Token";
+                string query = $"SELECT TokenExpiration FROM manageuser WHERE ResetToken = @Token";
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@Token", token);
@@ -94,7 +94,7 @@ namespace lms.Account
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 con.Open();
-                string updateQuery = $"UPDATE users SET Password = @NewPassword, ResetToken = NULL, TokenExpiration = NULL WHERE ResetToken = @Token";
+                string updateQuery = $"UPDATE manageuser SET Password = @NewPassword, ResetToken = NULL, TokenExpiration = NULL WHERE ResetToken = @Token";
 
                 using (MySqlCommand cmd = new MySqlCommand(updateQuery, con))
                 {

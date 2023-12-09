@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -40,19 +41,35 @@ namespace lms.Account
                         if (!string.IsNullOrEmpty(userEmail))
                         {
                             lblUserEmail.Text = userEmail;
-
-
-                            byte[] profileImageBytes = GetUserProfileImage(UserID);
-                            if (profileImageBytes != null)
-                            {
-                                string base64Image = Convert.ToBase64String(profileImageBytes);
-                                string imageSrc = "data:image/jpeg;base64," + base64Image;
-                                Image1.ImageUrl = imageSrc;
-                            }
-
                             DisplayTeacherProfileInfo(userEmail);
-                            //DisplayUploadedImage(UserID);
 
+                            if (!string.IsNullOrEmpty(UserID))
+                            {
+                                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
+                                {
+                                    connection.Open();
+                                    DisplayUploadedImage(connection, UserID);
+                                    GetUserProfileImage(UserID);
+
+                                    byte[] profileImageBytes = GetUserProfileImage(UserID);
+                                    if (profileImageBytes != null)
+                                    {
+                                        string base64Image = Convert.ToBase64String(profileImageBytes);
+                                        string imageSrc = "data:image/jpeg;base64," + base64Image;
+                                        Image2.ImageUrl = imageSrc;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // Handle the case where UserID is null or empty
+                                // You may want to log an error or display a message.
+                            }
+                        }
+                        else
+                        {
+                            // Handle the case where userEmail is null or empty
+                            // You may want to log an error or display a message.
                         }
                     }
                 }
@@ -64,7 +81,7 @@ namespace lms.Account
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE studentID = @UserIDUserID";
+                string query = "SELECT ImageData FROM tblimages WHERE studentId = @studentID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -75,9 +92,9 @@ namespace lms.Account
                     {
                         if (reader.Read())
                         {
-                            if (!(reader["profileimage"] is DBNull))
+                            if (!(reader["ImageData"] is DBNull))   
                             {
-                                return (byte[])reader["profileimage"];
+                                return (byte[])reader["ImageData"];
                             }
                         }
                     }
@@ -86,32 +103,31 @@ namespace lms.Account
 
             return null;
         }
-        private void DisplayUploadedImage(MySqlConnection connection, object studentID)
-        {
-            string fetchImageQuery = "SELECT ImageData FROM tblimages WHERE studentId = @studentID";
-            using (MySqlCommand fetchCmd = new MySqlCommand(fetchImageQuery, connection))
+        private void DisplayUploadedImage(MySqlConnection connection, string userID)
             {
-                fetchCmd.Parameters.AddWithValue("@studentID", studentID);
-                byte[] imageData = fetchCmd.ExecuteScalar() as byte[];
+                string fetchImageQuery = "SELECT ImageData FROM tblimages WHERE studentId = @studentID";
+                using (MySqlCommand fetchCmd = new MySqlCommand(fetchImageQuery, connection))
+                {
+                    fetchCmd.Parameters.AddWithValue("@studentID", userID);
+                    byte[] imageData = fetchCmd.ExecuteScalar() as byte[];
 
-                if (imageData != null && imageData.Length > 0)
-                {
-                    string base64String = Convert.ToBase64String(imageData);
-                    Image1.ImageUrl = "data:image/jpeg;base64," + base64String;
-                }
-                else
-                {
-                    Image1.ImageUrl = "Resources/default.jpg";
+                    if (imageData != null && imageData.Length > 0)
+                    {
+                        string base64String = Convert.ToBase64String(imageData);
+                        Image1.ImageUrl = "data:image/jpeg;base64," + base64String;
+                    }
+                    else
+                    {
+                        Image1.ImageUrl = "Resources/default.jpg";
+                    }
                 }
             }
-        }
-        private void DisplayTeacherProfileInfo(string userEmail)
+            private void DisplayTeacherProfileInfo(string userEmail)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                //string query = "SELECT studentid, firstname, lastname, age, birthday, email, profileimage, username FROM student_info1 WHERE email = @userEmail";
                 string query = "SELECT studentId, name, citizenship, birthdate, address, Email FROM student_info WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
@@ -131,7 +147,7 @@ namespace lms.Account
                             TextBox9.Text = reader["Email"].ToString();
                             //txtusername.Text = reader["username"].ToString();
 
-                            //byte[] imageBytes = reader["profileimage"] as byte[];
+                            //byte[] imageBytes = reader["ImageData"] as byte[];
                             //if (imageBytes != null && imageBytes.Length > 0)
                             //{
                             //    string base64String = Convert.ToBase64String(imageBytes);
@@ -145,6 +161,8 @@ namespace lms.Account
 
         protected void btnchangeimage_Click(object sender, EventArgs e)
         {
+            string UserID = Session["ID"] as string;
+
             try
             {
                 ConnectionClass conn = new ConnectionClass();
@@ -193,10 +211,18 @@ namespace lms.Account
                             }
                         }
 
-                        DisplayUploadedImage(connection, Session["ID"]);
+                        // Update the displayed image
+                        DisplayUploadedImage(connection, UserID);
+                        // Get and display the user's profile image
+                        byte[] profileImageBytes = GetUserProfileImage(UserID);
+                        if (profileImageBytes != null)
+                        {
+                            string base64Image = Convert.ToBase64String(profileImageBytes);
+                            string imageSrc = "data:image/jpeg;base64," + base64Image;
+                            Image2.ImageUrl = imageSrc;
+                        }
                     }
-
-                    ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Success','Profile updated successfully.','success')", true);
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Success','Profile updated successfully.','success')", true);
                 }
             }
             catch (Exception ex)
@@ -204,6 +230,7 @@ namespace lms.Account
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", $"swal('Error','{ex.Message}','error')", true);
             }
         
+
         //    string username = txtusername.Text;
         //    try
         //    {

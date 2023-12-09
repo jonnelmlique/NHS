@@ -47,7 +47,7 @@
                 <a href="#"> <i class='bx bxs-user-circle'></i>My Account</a>
             </div>
             <div class="item">
-                <a href="../Professor/DashBoard.aspx" class="sub-btn" ><i class="fas fa-sign-out-alt"></i>Go to DashBoard</a>
+                <a href="../Student/DashBoard.aspx" class="sub-btn" ><i class="fas fa-sign-out-alt"></i>Go to DashBoard</a>
             </div>
         </div>
     </div>
@@ -129,8 +129,9 @@
                          <div class="information">
                                <div class="info-lbl">
                                     <asp:Label ID="Label6" runat="server" Text="Email" CssClass="info-label"></asp:Label>
-                              </divf
-                           <div class="info-txt">
+                              </div>
+                          
+                             <div class="info-txt">
                                   <asp:TextBox ID="TextBox9" runat="server" CssClass="info-text" Enabled="False"></asp:TextBox>
                           </div>
                      </div>

@@ -20,78 +20,73 @@ namespace lms.Account
         protected void btnSent_Click(object sender, EventArgs e)
         {
             try
-            { 
-            string email = txtemail.Text;
-            string token = Guid.NewGuid().ToString();
-            DateTime timestamp = DateTime.Now.AddHours(24);
-
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-            string tableName = DetermineUserType(email);
-
-            if (!string.IsNullOrEmpty(tableName))
             {
-                using (MySqlConnection con = new MySqlConnection(connectionString))
+                string Email = txtemail.Text;
+                string token = Guid.NewGuid().ToString();
+                DateTime timestamp = DateTime.Now.AddHours(24);
+
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+                string tableName = DetermineUserType(Email);
+
+                if (!string.IsNullOrEmpty(tableName))
                 {
-                    con.Open();
-
-                    string updateQuery = $"UPDATE users SET ResetToken = @Token, TokenExpiration = @Timestamp WHERE email = @email";
-
-                    using (MySqlCommand cmd = new MySqlCommand(updateQuery, con))
+                    using (MySqlConnection con = new MySqlConnection(connectionString))
                     {
-                        cmd.Parameters.AddWithValue("@Token", token);
-                        cmd.Parameters.AddWithValue("@Timestamp", timestamp);
-                        cmd.Parameters.AddWithValue("@email", email);
+                        con.Open();
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        string updateQuery = $"UPDATE manageuser SET ResetToken = @Token, TokenExpiration = @Timestamp WHERE Email = @Email";
 
-                        if (rowsAffected > 0)
+                        using (MySqlCommand cmd = new MySqlCommand(updateQuery, con))
                         {
-                            string resetLink = $"https://localhost:44304/Account/Reset_Password.aspx?table={tableName}&token={token}";
-                            SendPasswordResetEmail(email, resetLink);
+                            cmd.Parameters.AddWithValue("@Token", token);
+                            cmd.Parameters.AddWithValue("@Timestamp", timestamp);
+                            cmd.Parameters.AddWithValue("@Email", Email);
+
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                string resetLink = $"https://localhost:44304/Account/Reset_Password.aspx?table={tableName}&token={token}";
+                                SendPasswordResetEmail(Email, resetLink);
                                 ShowSuccessMessage("Password reset link sent to your email.");
-                            //lblMessage.Text = "Password reset link sent to your email.";
-                            txtemail.Text = "";
-                        }
-                        else
-                        {
-                                ShowErrorMessage("Email Not found");
-                                //lblMessage.Text = "Email Not found";
+                                txtemail.Text = "";
                             }
+                            //else
+                            //{
+                            //    ShowErrorMessage("Email not found");
+                            //}
                         }
+                    }
                 }
-            }
-            else
-            {
-                    ShowErrorMessage("Invalid Email Address");
-                    //lblMessage.Text = "Invalid Email Address";
+                else
+                {
+                    ShowErrorMessage("Email not found");
                 }
             }
             catch (Exception ex)
             {
                 ShowErrorMessage("An error occurred while processing your request. Please try again later.");
-                //lblMessage.Text = "An error occurred while processing your request. Please try again later.";
             }
         }
-        private string DetermineUserType(string email)
-        {
 
+        private string DetermineUserType(string Email)
+        {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 con.Open();
-                string query = "SELECT usertype FROM users WHERE email = @email";
-
+                string query = "SELECT Role FROM manageuser WHERE Email = @Email";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@email", email);
-                    var userType = cmd.ExecuteScalar();
-                    return userType != null ? userType.ToString() : null;
-
+                    cmd.Parameters.AddWithValue("@Email", Email);
+                    var Role = cmd.ExecuteScalar();
+                    return Role != null ? Role.ToString() : null;
                 }
             }
         }
+
         private void SendPasswordResetEmail(string toEmail, string resetLink)
         {
             using (MailMessage message = new MailMessage("novalichesseniorhighschool@gmail.com", toEmail))
