@@ -63,7 +63,7 @@ namespace lms.Student
                 }
             }
         }
-   
+
         private byte[] GetUserProfileImage(string UserID)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;

@@ -66,7 +66,7 @@
            </asp:TemplateField>
        </Columns>
    </asp:GridView>
-
+                 <asp:Label ID="lblUserId" runat="server" Text="Label"></asp:Label>
 
 
              </div>

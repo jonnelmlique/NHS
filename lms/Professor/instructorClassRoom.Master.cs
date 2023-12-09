@@ -101,7 +101,7 @@ namespace lms.Professor
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE email = @userEmail";
+                string query = "SELECT profileimage FROM lmsusers WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {

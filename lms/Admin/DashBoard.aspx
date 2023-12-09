@@ -6,7 +6,7 @@
 
 
   <div class="dashboard">
-         <div class="dash-list">
+<%--         <div class="dash-list">
             <div class="text">
               <p>TOTAL STUDENTS </p>
              
@@ -15,7 +15,7 @@
                     <span><%= GetTotalStudentCount() %></span>
                    <i class="fas fa-users"></i>  
              </div>
-         </div>
+         </div>--%>
          <div class="dash-list">
             <div class="text">
              <p>TOTAL INSTRUCTORS </p>

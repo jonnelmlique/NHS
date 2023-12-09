@@ -26,7 +26,7 @@ namespace lms.Professor
                     try
                     {
                         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(connectionString))
+                        using (MySqlConnection con = new MySqlConnection(connectionString)) 
                         {
                             con.Open();
                             string query = "SELECT subjectname FROM rooms WHERE roomid = @roomid";

@@ -63,7 +63,7 @@ namespace lms.Account
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE email = @userEmail";
+                string query = "SELECT profileimage FROM lmsusers WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -152,7 +152,7 @@ namespace lms.Account
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "UPDATE users SET password = @newPassword WHERE email = @userEmail";
+                string query = "UPDATE lmsusers SET password = @newPassword WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -171,7 +171,7 @@ namespace lms.Account
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT password FROM users WHERE email = @userEmail";
+                string query = "SELECT password FROM lmsusers WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -228,7 +228,7 @@ namespace lms.Account
                     }
 
 
-                    string userQuery = "UPDATE users SET profileimage = @ProfileImage WHERE username = @Username";
+                    string userQuery = "UPDATE lmsusers SET profileimage = @ProfileImage WHERE username = @Username";
                     using (MySqlCommand userCmd = new MySqlCommand(userQuery, con))
                     {
                         userCmd.Parameters.AddWithValue("@Username", username);
@@ -272,7 +272,7 @@ namespace lms.Account
 
         private byte[] GetExistingProfileImage(string username, MySqlConnection con)
         {
-            string query = "SELECT profileimage FROM users WHERE username = @Username";
+            string query = "SELECT profileimage FROM lmsusers WHERE username = @Username";
             using (MySqlCommand cmd = new MySqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@Username", username);
@@ -285,11 +285,11 @@ namespace lms.Account
         {
             try
             {
-                string teacherid = TextBox3.Text;
+                //string teacherid = TextBox3.Text;
                 string email = TextBox9.Text;
                 string smtppassword = TextBox10.Text;
 
-                if (!string.IsNullOrEmpty(teacherid) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(smtppassword))
+                if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(smtppassword))
                 {
                     string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
@@ -297,11 +297,10 @@ namespace lms.Account
                     {
                         if (!IsEmailExists(email, connection))
                         {
-                            string query = "INSERT INTO smtp_credentials (teacherid, smtp_email, smtp_password) VALUES (@teacherid, @smtp_email, @smtp_password)";
+                            string query = "INSERT INTO smtp_credentials (smtp_email, smtp_password) VALUES (@smtp_email, @smtp_password)";
 
                             using (MySqlCommand cmd = new MySqlCommand(query, connection))
                             {
-                                cmd.Parameters.AddWithValue("@teacherid", teacherid);
                                 cmd.Parameters.AddWithValue("@smtp_email", email);
                                 cmd.Parameters.AddWithValue("@smtp_password", smtppassword);
 

@@ -28,7 +28,7 @@ namespace lms.sis.SISPAGES
             using (MySqlConnection connection = conn.GetConnection())
             {
                 connection.Open();
-                string selectquery = "SELECT * FROM `manageuser`";
+                string selectquery = "SELECT UserID, Name, Email, Password, Role FROM manageuser;";
                 using (MySqlCommand command = new MySqlCommand(selectquery, connection))
                 {
                     MySqlDataAdapter adapter = new MySqlDataAdapter(command);

@@ -113,7 +113,7 @@ namespace lms.Admin
                             {
                                 con.Open();
 
-                                string userQuery = "INSERT INTO users (username, password, email, usertype, status, profileimage) VALUES (@Username, @Password, @Email, 'teacher', 'Activated', @ProfileImage)";
+                                string userQuery = "INSERT INTO lmsusers (username, password, email, usertype, status, profileimage) VALUES (@Username, @Password, @Email, 'teacher', 'Activated', @ProfileImage)";
                                 using (MySqlCommand userCmd = new MySqlCommand(userQuery, con))
                                 {
                                     userCmd.Parameters.AddWithValue("Username", username);
@@ -257,9 +257,7 @@ namespace lms.Admin
             {
                 con.Open();
 
-                string query = "SELECT COUNT(*) FROM users WHERE email = @Email " +
-                               "UNION ALL " +
-                               "SELECT COUNT(*) FROM student_info WHERE email = @Email " +
+                string query = "SELECT COUNT(*) FROM lmsusers WHERE email = @Email " +
                                "UNION ALL " +
                                "SELECT COUNT(*) FROM teacher_info WHERE email = @Email";
 
@@ -288,9 +286,7 @@ namespace lms.Admin
             {
                 con.Open();
 
-                string query = "SELECT COUNT(*) FROM users WHERE username = @Username " +
-                               "UNION ALL " +
-                               "SELECT COUNT(*) FROM student_info WHERE username = @Username " +
+                string query = "SELECT COUNT(*) FROM lmsusers WHERE username = @Username " +
                                "UNION ALL " +
                                "SELECT COUNT(*) FROM teacher_info WHERE username = @Username";
 

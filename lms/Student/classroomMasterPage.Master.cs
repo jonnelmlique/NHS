@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,13 +15,13 @@ namespace lms.Student
         {
             if (!IsPostBack)
             {
-                if (Session["LoggedInUserEmail"] == null)
+                if (Session["LoggedInUser"] == null)
                 {
                     Response.Redirect("~/Account/Login.aspx");
                 }
                 else
                 {
-                    string userType = Session["LoggedInUserType"] as string;
+                    string userType = Session["Role"] as string;
 
                     if (userType == "teacher")
                     {
@@ -32,89 +33,100 @@ namespace lms.Student
                     }
                     else
                     {
+                        string userEmail = Session["LoggedInUser"] as string;
+                        string UserID = Session["ID"] as string;
 
-                        string userEmail = Session["LoggedInUserEmail"] as string;
 
                         if (!string.IsNullOrEmpty(userEmail))
                         {
                             lblUserEmail.Text = userEmail;
-                            byte[] profileImageBytes = GetUserProfileImage(userEmail);
-                            if (profileImageBytes != null)
+
+                            if (!string.IsNullOrEmpty(UserID))
                             {
-                                string base64Image = Convert.ToBase64String(profileImageBytes);
-                                string imageSrc = "data:image/jpeg;base64," + base64Image;
-                                Image1.ImageUrl = imageSrc;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!IsPostBack)
-            {
-
-                if (!string.IsNullOrEmpty(Request.QueryString["roomid"]))
-                {
-
-                    if (int.TryParse(Request.QueryString["roomid"], out int roomId))
-
-                    {
-                        try
-                        {
-                            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-
-                            using (MySqlConnection con = new MySqlConnection(connectionString))
-                            {
-                                con.Open();
-                                string queryRooms = "SELECT * FROM rooms WHERE roomid = @roomid";
-
-                                using (MySqlCommand commandRooms = new MySqlCommand(queryRooms, con))
+                                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
                                 {
-                                    commandRooms.Parameters.AddWithValue("@roomid", roomId);
+                                    connection.Open();
+                                    GetUserProfileImage(UserID);
 
-                                    using (MySqlDataReader readerRooms = commandRooms.ExecuteReader())
+                                    byte[] profileImageBytes = GetUserProfileImage(UserID);
+                                    if (profileImageBytes != null)
                                     {
-                                        if (readerRooms.Read())
-                                        {
-                                            lblsubjectname.Text = readerRooms["subjectname"].ToString();
-                                            lblschedule.Text = readerRooms["schedule"].ToString();
-
-                                        }
+                                        string base64Image = Convert.ToBase64String(profileImageBytes);
+                                        string imageSrc = "data:image/jpeg;base64," + base64Image;
+                                        Image1.ImageUrl = imageSrc;
                                     }
                                 }
-
                             }
                         }
-                        catch (Exception ex)
+                    }
+
+                    if (!IsPostBack)
+                    {
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["roomid"]))
                         {
 
+                            if (int.TryParse(Request.QueryString["roomid"], out int roomId))
+
+                            {
+                                try
+                                {
+                                    string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+                                    using (MySqlConnection con = new MySqlConnection(connectionString))
+                                    {
+                                        con.Open();
+                                        string queryRooms = "SELECT * FROM rooms WHERE roomid = @roomid";
+
+                                        using (MySqlCommand commandRooms = new MySqlCommand(queryRooms, con))
+                                        {
+                                            commandRooms.Parameters.AddWithValue("@roomid", roomId);
+
+                                            using (MySqlDataReader readerRooms = commandRooms.ExecuteReader())
+                                            {
+                                                if (readerRooms.Read())
+                                                {
+                                                    lblsubjectname.Text = readerRooms["subjectname"].ToString();
+                                                    lblschedule.Text = readerRooms["schedule"].ToString();
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+                            }
                         }
+
                     }
                 }
-
             }
         }
 
-        private byte[] GetUserProfileImage(string userEmail)
+        private byte[] GetUserProfileImage(string UserID)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE email = @userEmail";
+                string query = "SELECT ImageData FROM tblimages WHERE studentId = @studentID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@userEmail", userEmail);
+                    cmd.Parameters.AddWithValue("@studentID", UserID);
                     connection.Open();
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            if (!(reader["profileimage"] is DBNull))
+                            if (!(reader["ImageData"] is DBNull))
                             {
-                                return (byte[])reader["profileimage"];
+                                return (byte[])reader["ImageData"];
                             }
                         }
                     }
@@ -123,6 +135,5 @@ namespace lms.Student
 
             return null;
         }
-
     }
 }

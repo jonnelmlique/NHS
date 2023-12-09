@@ -37,6 +37,11 @@ namespace lms.Professor
             }
             DisplayAnnouncements();
 
+
+              if (Session["LoggedInUserID"] != null)
+        {
+            lblUserId.Text = Session["LoggedInUserID"].ToString();
+        }
         }
 
         protected void btncreatepost_Click(object sender, EventArgs e)
@@ -93,7 +98,7 @@ namespace lms.Professor
 
                                         commandInsert.ExecuteNonQuery();
 
-                                        SendAnnouncementEmail(postContent, teacherEmail, roomIdFromQueryString);
+                                        //SendAnnouncementEmail(postContent, teacherEmail, roomIdFromQueryString);
 
 
                                         TextBox1.Text = "";
@@ -107,97 +112,97 @@ namespace lms.Professor
                 DisplayAnnouncements();
             }
         }
-        private void SendAnnouncementEmail(string postContent, string teacherEmail, int roomIdFromQueryString)
-        {
-            try
-            {
-                // Retrieve logged-in user's email from session
-                string loggedInUserEmail = Session["LoggedInUserEmail"] as string;
+        //private void SendAnnouncementEmail(string postContent, string teacherEmail, int roomIdFromQueryString)
+        //{
+        //    try
+        //    {
+        //        // Retrieve logged-in user's email from session
+        //        string loggedInUserEmail = Session["LoggedInUserEmail"] as string;
 
-                if (string.IsNullOrEmpty(loggedInUserEmail))
-                {
-                    ShowErrorMessage("Unable to retrieve the logged-in user's email.");
-                    return;
-                }
+        //        if (string.IsNullOrEmpty(loggedInUserEmail))
+        //        {
+        //            ShowErrorMessage("Unable to retrieve the logged-in user's email.");
+        //            return;
+        //        }
 
-                // Retrieve SMTP credentials from the database
-                string smtpConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        //        // Retrieve SMTP credentials from the database
+        //        string smtpConnectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-                using (MySqlConnection smtpConnection = new MySqlConnection(smtpConnectionString))
-                {   
-                    smtpConnection.Open();
+        //        using (MySqlConnection smtpConnection = new MySqlConnection(smtpConnectionString))
+        //        {   
+        //            smtpConnection.Open();
 
-                    string smtpQuery = "SELECT smtp_email, smtp_password FROM smtp_credentials WHERE smtp_email = @smtp_email";
+        //            string smtpQuery = "SELECT smtp_email, smtp_password FROM smtp_credentials WHERE smtp_email = @smtp_email";
 
-                    using (MySqlCommand smtpCmd = new MySqlCommand(smtpQuery, smtpConnection))
-                    {
-                        smtpCmd.Parameters.AddWithValue("@smtp_email", loggedInUserEmail);
+        //            using (MySqlCommand smtpCmd = new MySqlCommand(smtpQuery, smtpConnection))
+        //            {
+        //                smtpCmd.Parameters.AddWithValue("@smtp_email", loggedInUserEmail);
 
-                        using (MySqlDataReader reader = smtpCmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                string smtpEmail = reader["smtp_email"].ToString();
-                                string smtpPassword = reader["smtp_password"].ToString();
+        //                using (MySqlDataReader reader = smtpCmd.ExecuteReader())
+        //                {
+        //                    if (reader.Read())
+        //                    {
+        //                        string smtpEmail = reader["smtp_email"].ToString();
+        //                        string smtpPassword = reader["smtp_password"].ToString();
 
-                                string smtpServer = "smtp.gmail.com";
-                                int smtpPort = 587;
+        //                        string smtpServer = "smtp.gmail.com";
+        //                        int smtpPort = 587;
 
-                                reader.Close();
+        //                        reader.Close();
 
-                                List<string> studentEmails = new List<string>();
+        //                        List<string> studentEmails = new List<string>();
 
-                                string queryStudents = "SELECT studentemail FROM invitation WHERE roomid = @roomid AND status = 'Accepted'";
+        //                        string queryStudents = "SELECT studentemail FROM invitation WHERE roomid = @roomid AND status = 'Accepted'";
 
-                                using (MySqlCommand commandStudents = new MySqlCommand(queryStudents, smtpConnection))
-                                {
-                                    commandStudents.Parameters.AddWithValue("@roomid", roomIdFromQueryString);
+        //                        using (MySqlCommand commandStudents = new MySqlCommand(queryStudents, smtpConnection))
+        //                        {
+        //                            commandStudents.Parameters.AddWithValue("@roomid", roomIdFromQueryString);
 
-                                    using (MySqlDataReader readerStudents = commandStudents.ExecuteReader())
-                                    {
-                                        while (readerStudents.Read())
-                                        {
-                                            string studentEmail = readerStudents["studentemail"].ToString();
-                                            studentEmails.Add(studentEmail);
-                                        }
-                                    }
-                                }
+        //                            using (MySqlDataReader readerStudents = commandStudents.ExecuteReader())
+        //                            {
+        //                                while (readerStudents.Read())
+        //                                {
+        //                                    string studentEmail = readerStudents["studentemail"].ToString();
+        //                                    studentEmails.Add(studentEmail);
+        //                                }
+        //                            }
+        //                        }
 
-                                foreach (string studentEmail in studentEmails)
-                                {
-                                    using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
-                                    {
-                                        smtpClient.EnableSsl = true;
-                                        smtpClient.Credentials = new NetworkCredential(smtpEmail, smtpPassword);
+        //                        foreach (string studentEmail in studentEmails)
+        //                        {
+        //                            using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
+        //                            {
+        //                                smtpClient.EnableSsl = true;
+        //                                smtpClient.Credentials = new NetworkCredential(smtpEmail, smtpPassword);
 
-                                        string roomLink = "https://localhost:44304/Account/Login.aspx";
+        //                                string roomLink = "https://localhost:44304/Account/Login.aspx";
 
-                                        string subject = $"Novaliches High School: Announcements";
-                                        string body = $"Dear Student, <br/><br/>You have a room Announcements from {teacherEmail}. " +
-                                                      $"<br/>{postContent}. Click <a href=\"{roomLink}\">here</a> to view in the room." +
-                                                      $"<br/><br/>Best regards, <br/>{teacherEmail}";
+        //                                string subject = $"Novaliches High School: Announcements";
+        //                                string body = $"Dear Student, <br/><br/>You have a room Announcements from {teacherEmail}. " +
+        //                                              $"<br/>{postContent}. Click <a href=\"{roomLink}\">here</a> to view in the room." +
+        //                                              $"<br/><br/>Best regards, <br/>{teacherEmail}";
 
-                                        MailMessage mailMessage = new MailMessage(smtpEmail, studentEmail, subject, body);
-                                        mailMessage.IsBodyHtml = true;
+        //                                MailMessage mailMessage = new MailMessage(smtpEmail, studentEmail, subject, body);
+        //                                mailMessage.IsBodyHtml = true;
 
-                                        smtpClient.Send(mailMessage);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                ShowErrorMessage("SMTP credentials not found for the logged-in user's email.");
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Error sending email: {ex.Message}");
-                throw;
-            }
-        }
+        //                                smtpClient.Send(mailMessage);
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        ShowErrorMessage("SMTP credentials not found for the logged-in user's email.");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ShowErrorMessage($"Error sending email: {ex.Message}");
+        //        throw;
+        //    }
+        //}
         private void DisplayAnnouncements()
         {
             if (Session["RoomId"] != null && int.TryParse(Session["RoomId"].ToString(), out int roomId))
@@ -313,7 +318,7 @@ namespace lms.Professor
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE email = @userEmail";
+                string query = "SELECT profileimage FROM lmsusers WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {

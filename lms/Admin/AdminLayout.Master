@@ -65,7 +65,7 @@
                     <a class="sub-btn" ><i class="fa-solid fa-users-gear"></i>Manage Account<i class="fas fa-angle-right dropdown"></i></a>
                     <div class="sub-menu">
                             <a href="ProfessorAcc.aspx" class="sub-item">Professors</a>
-                            <a href="StudentAcc.aspx"> Students</a>
+<%--                            <a href="StudentAcc.aspx"> Students</a>--%>
                             
                         </div>
                 </div>
@@ -77,7 +77,7 @@
                     <a class="sub-btn"><i class="fas fa-bell"></i> Notify Users<i class="fas fa-angle-right dropdown"></i></a>
                     <div class="sub-menu">
                         <a href="ProfessorNotif.aspx" class="sub-item">Professors</a>
-                        <a href="StudentNotif.aspx"> Students</a>
+<%--                        <a href="StudentNotif.aspx"> Students</a>--%>
 
                     </div>
                 </div>

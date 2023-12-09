@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -13,48 +14,90 @@ namespace lms.LOGIN
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+          
             txtemail.Focus();
         }
         protected void btnlogin_Click(object sender, EventArgs e)
         {
             string un = txtemail.Text;
             string pass = txtpassword.Text;
+
             try
             {
                 using (MySqlConnection conn = new MySqlConnection("server=localhost;username=root;database=learninghub;password=''"))
                 {
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);
-                    cmd.Parameters.AddWithValue("@username", un);
-                    cmd.Parameters.AddWithValue("@password", pass);
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+
+                    // Check in the manageuser table
+                    MySqlCommand manageuserCmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);
+                    manageuserCmd.Parameters.AddWithValue("@username", un);
+                    manageuserCmd.Parameters.AddWithValue("@password", pass);
+
+                    // Check in the users table
+                    MySqlCommand usersCmd = new MySqlCommand("SELECT * FROM lmsusers WHERE email=@username AND password=@password", conn);
+                    usersCmd.Parameters.AddWithValue("@username", un);
+                    usersCmd.Parameters.AddWithValue("@password", pass);
+
+                    using (MySqlDataReader manageuserReader = manageuserCmd.ExecuteReader())
                     {
-                        if (dr.Read())
+                        if (manageuserReader.Read())
                         {
-                            string role = dr.GetString("Role");
+                            // User found in the manageuser table
+                            //HandleUserFound("Student", "/Student/DashBoard.aspx", manageuserReader);
+                                        {
+                                string roles = manageuserReader.GetString("Role");
+                                string role = manageuserReader.GetString("Role");
                             Session["Role"] = role;
-                            Session["Name"] = dr.GetString("Name");
-                            Session["ID"] = dr.GetString("UserID");
-                             Session["LoggedInUserEmail"] = un;
+                            //Session["Name"] = manageuserReader.GetString("username");
+                            Session["ID"] = manageuserReader.GetString("UserID");
+                            Session["LoggedInUserEmail"] = un;
 
-
-                            if (role == "Student")
+                                if (roles == "Student")
                             {
                                 Session["LoggedInUser"] = un;
+                                    //HandleUserFound("Teacher", "/Professor/DashBoard.aspx", manageuserReader);
 
-                                Response.Redirect("/Student/DashBoard.aspx");
+                                    HandleUserFoun1("Student",  "/Student/DashBoard.aspx", manageuserReader);
                             }
-                            if (role == "Admin")
+                            else if (roles == "Admin")
                             {
                                 Session["LoggedInUser"] = un;
-                                Response.Redirect("/sis/SISPAGES/Admin.aspx");
+                                    //Response.Redirect("/sis/SISPAGES/Admin.aspx");
+                                    HandleUserFoun1("Admin", "/sis/SISPAGES/Admin.aspx", manageuserReader);
+
+                                }
                             }
-                        }
-                        else
+                    }
+
+                    }
+
+                    // If user is not found in the manageuser table, check in the users table
+                    using (MySqlDataReader usersReader = usersCmd.ExecuteReader())
+                    {
+                        if (usersReader.Read())
                         {
-                            throw new Exception("User not found or invalid credentials");
+                            // User found in the users table
+                            string userType = usersReader.GetString("usertype");
+                            Session["Name"] = usersReader.GetString("username");
+                            Session["ID"] = usersReader.GetInt32("userid").ToString();
+                            Session["LoggedInUserEmail"] = un;
+                            Session["LoggedInUserType"] = userType;
+
+                            if (userType == "teacher")
+                            {
+                                // User is a teacher
+                                HandleUserFound("Teacher", "/Professor/DashBoard.aspx", usersReader);
+                            }
+                            else if (userType == "admin")
+                            {
+                                // User is an admin
+                                HandleUserFound("Admin", "/Admin/DashBoard.aspx", usersReader);
+                            }
                         }
                     }
+
+                    // If no matching user is found in either table, throw an exception
+                    throw new Exception("User not found or invalid credentials");
                 }
             }
             catch (Exception ex)
@@ -63,177 +106,164 @@ namespace lms.LOGIN
             }
         }
 
-        //        try
+        private void HandleUserFound(string role, string redirectUrl, MySqlDataReader reader)
+        {
+            string connectionString = "server=localhost;username=root;database=learninghub;password=''";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                Session["Role"] = role;
+                Session["LoggedInUser"] = reader.GetString("Email"); // Assuming the email is the username
+                Session["Name"] = reader.GetString("username");
+                Session["ID"] = reader.GetInt32("UserID").ToString();
+                Session["LoggedInUserEmail"] = reader.GetString("Email");
+
+                if (role == "Teacher")
+                {
+                    MySqlCommand teacherInfoCmd = new MySqlCommand("SELECT * FROM teacher_info WHERE email = @email", conn);
+                    teacherInfoCmd.Parameters.AddWithValue("@email", Session["LoggedInUserEmail"]);
+
+                    using (MySqlDataReader teacherInfoReader = teacherInfoCmd.ExecuteReader())
+                    {
+                        if (teacherInfoReader.Read())
+                        {
+                            Session["TeacherFirstName"] = teacherInfoReader.GetString("firstname");
+                            Session["TeacherLastName"] = teacherInfoReader.GetString("lastname");
+                            Session["TeacherEmail"] = teacherInfoReader.GetString("email");
+                            Session["LoggedInUserID"] = teacherInfoReader.GetInt32("teacherid").ToString();
+                        }
+                    }
+                }
+
+                Response.Redirect(redirectUrl);
+            }
+        }
+
+
+        //    string un = txtemail.Text;
+        //    string pass = txtpassword.Text;
+
+        //    try
+        //    {
+
+        //        using (MySqlConnection conn = new MySqlConnection("server=localhost;username=root;database=learninghub;password=''"))
         //        {
-        //            string email = txtemail.Text.Trim();
-        //            string password = txtpassword.Text.Trim();
+        //            conn.Open();
 
-        //            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-        //            bool emailValid = false;
-        //            bool passwordValid = false;
-        //            string userStatus = "";
-        //            int userID = 0;
 
-        //            using (MySqlConnection con = new MySqlConnection(connectionString))
+
+        //            // Check in the manageuser table
+        //            MySqlCommand manageuserCmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);
+        //            manageuserCmd.Parameters.AddWithValue("@username", un);
+        //            manageuserCmd.Parameters.AddWithValue("@password", pass);
+
+        //            // Check in the users table
+        //            MySqlCommand usersCmd = new MySqlCommand("SELECT * FROM lmsusers WHERE email=@username AND password=@password", conn);
+        //            usersCmd.Parameters.AddWithValue("@username", un);
+        //            usersCmd.Parameters.AddWithValue("@password", pass);
+
+        //            using (MySqlDataReader manageuserReader = manageuserCmd.ExecuteReader())
         //            {
-        //                con.Open();
-
-        //                emailValid = CheckEmail(con, email);
-
-        //                if (emailValid)
+        //                if (manageuserReader.Read())
         //                {
-        //                    passwordValid = CheckPassword(con, email, password);
-        //                    userStatus = GetUserStatus(con, email);
-        //                    userID = GetUserID(con, email);
-        //                }
+        //                    string role = manageuserReader.GetString("Role");
+        //                    Session["Role"] = role;
+        //                    Session["Name"] = manageuserReader.GetString("Name");
+        //                    Session["ID"] = manageuserReader.GetString("UserID");
+        //                    Session["LoggedInUserEmail"] = un;
 
-        //                if (emailValid && passwordValid && userStatus == "Activated")
-        //                {
-        //                    string usertype = DetermineUserUsertype(con, email);
-        //                    if (!string.IsNullOrEmpty(usertype))
+        //                    if (role == "Student")
         //                    {
-        //                        Session["LoggedInUserEmail"] = email;
-
-        //                        Session["LoggedInUserType"] = usertype;
-        //                        Session["LoggedInUserID"] = userID;
-
-        //                        if (usertype == "admin")
-        //                        {
-        //                            Response.Redirect("/sis/SISPAGES/Admin.aspx");
-        //                        }
-        //                        else if (usertype == "student")
-        //                        {
-        //                            Response.Redirect("/Student/DashBoard.aspx");
-        //                        }
-        //                        else if (usertype == "teacher")
-        //                        {
-        //                            Response.Redirect("/Professor/DashBoard.aspx");
-        //                        }
+        //                        Session["LoggedInUser"] = un;
+        //                        Response.Redirect("/Student/DashBoard.aspx");
         //                    }
-        //                    else
+        //                    else if (role == "Admin")
         //                    {
-        //                        ShowErrorMessage("Invalid User Type");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    if (userStatus == "Deactivated")
-        //                    {
-        //                        ShowErrorMessage("Your account is deactivated. Email the admin for more info.");
-        //                    }
-        //                    else if (!emailValid)
-        //                    {
-        //                        ShowErrorMessage("Incorrect Email");
-        //                    }
-        //                    else
-        //                    {
-        //                        ShowErrorMessage("Incorrect Password");
+        //                        Session["LoggedInUser"] = un;
+        //                        Response.Redirect("/sis/SISPAGES/Admin.aspx");
         //                    }
         //                }
         //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            ShowErrorMessage("An error occurred while processing your request. Please try again later.");
-        //        }
 
+        //            // If user is not found in the manageuser table, check in the users table
+        //            using (MySqlDataReader usersReader = usersCmd.ExecuteReader())
+        //            {
+        //                if (usersReader.Read())
+
+        //                {
+        //                    string userType = usersReader.GetString("usertype");
+        //                    Session["Name"] = usersReader.GetString("username");
+        //                    Session["ID"] = usersReader.GetInt32("userid").ToString();
+        //                    Session["LoggedInUserEmail"] = un;
+        //                    Session["LoggedInUserType"] = userType;
+
+        //                    if (userType == "teacher")
+        //                    {
+        //                        Session["Role"] = "Teacher";
+        //                        Session["LoggedInUser"] = un;
+        //                        Response.Redirect("/Professor/DashBoard.aspx");
+        //                    }
+        //                    else if (userType == "admin")
+        //                    {
+        //                        Session["Role"] = "Admin";
+        //                        Session["LoggedInUser"] = un;
+        //                        Response.Redirect("/Admin/DashBoard.aspx");
+        //                    }
+        //                }
+        //            }
+
+        //            // If no matching user is found in either table, throw an exception
+        //            throw new Exception("User not found or invalid credentials");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ClientScript.RegisterStartupScript(this.GetType(), "alert", $"swal('Error', '{ex.Message}', 'error');", true);
+        //    }
         //}
-        //    private int GetUserID(MySqlConnection con, string email)
-        //    {
-        //        int userID = 0;
 
-        //        string teacherQuery = "SELECT teacherid FROM teacher_info WHERE email = @Email";
-        //        using (MySqlCommand teacherCmd = new MySqlCommand(teacherQuery, con))
-        //        {
-        //            teacherCmd.Parameters.AddWithValue("@Email", email);
-        //            object teacherResult = teacherCmd.ExecuteScalar();
+        private void HandleUserFoun1(string role, string redirectUrl, MySqlDataReader reader)
+        {
+            string connectionString = "server=localhost;username=root;database=learninghub;password=''";
 
-        //            if (teacherResult != null)
-        //            {
-        //                userID = Convert.ToInt32(teacherResult);
-        //                return userID;
-        //            }
-        //        }
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
 
-        //        string studentQuery = "SELECT studentid FROM student_Info WHERE email = @Email";
-        //        using (MySqlCommand studentCmd = new MySqlCommand(studentQuery, con))
-        //        {
-        //            studentCmd.Parameters.AddWithValue("@Email", email);
-        //            object studentResult = studentCmd.ExecuteScalar();
+                Session["Role"] = role;
+                Session["LoggedInUser"] = reader.GetString("Email"); // Assuming the email is the username
+                //Session["Name"] = reader.GetString("username");
+                Session["ID"] = reader.GetInt32("UserID").ToString();
+                Session["LoggedInUserEmail"] = reader.GetString("Email");
 
-        //            if (studentResult != null)
-        //            {
-        //                userID = Convert.ToInt32(studentResult);
-        //                return userID;
-        //            }
-        //        }
+                if (role == "Student")
+                {
+                    MySqlCommand teacherInfoCmd = new MySqlCommand("SELECT * FROM student_info WHERE email = @email", conn);
+                    teacherInfoCmd.Parameters.AddWithValue("@email", Session["LoggedInUserEmail"]);
 
-        //        return userID;
-        //    }
+                    using (MySqlDataReader studentInfoReader = teacherInfoCmd.ExecuteReader())
+                    {
+                        if (studentInfoReader.Read())
+                        {
+                            Session["studentname"] = studentInfoReader.GetString("name");
+                            Session["studentemail"] = studentInfoReader.GetString("email");
+                            Session["LoggedInUserID"] = studentInfoReader.GetInt32("studentid").ToString();
+                        }
+                    }
+                }
 
-        //    private string GetUserStatus(MySqlConnection con, string email)
-        //    {
-        //        string query = "SELECT Status FROM users WHERE Email = @Email";
-        //        using (MySqlCommand cmd = new MySqlCommand(query, con))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Email", email);
-        //            object status = cmd.ExecuteScalar();
-        //            if (status != null)
-        //            {
-        //                return status.ToString();
-        //            }
-        //            return null;
-        //        }
-        //    }
-
-        //    private bool CheckEmail(MySqlConnection con, string email)
-        //    {
-        //        string query = "SELECT Email FROM users WHERE BINARY Email = @Email";
-        //        using (MySqlCommand cmd = new MySqlCommand(query, con))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Email", email);
-        //            return cmd.ExecuteScalar() != null;
-        //        }
-        //    }
-        //    private bool CheckPassword(MySqlConnection con, string email, string password)
-        //    {
-        //        string query = "SELECT Password FROM users WHERE Email = @Email";
-        //        using (MySqlCommand cmd = new MySqlCommand(query, con))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Email", email);
-
-        //            using (MySqlDataReader reader = cmd.ExecuteReader())
-        //            {
-        //                if (reader.Read())
-        //                {
-        //                    string storedPassword = reader["Password"].ToString();
-        //                    return VerifyPassword(password, storedPassword);
-        //                }
-        //            }
-        //            return false;
-        //        }
-        //    }
-
-        //    private string DetermineUserUsertype(MySqlConnection con, string email)
-        //    {
-        //        string query = "SELECT usertype FROM users WHERE Email = @Email";
-        //        using (MySqlCommand cmd = new MySqlCommand(query, con))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Email", email);
-        //            return (string)cmd.ExecuteScalar();
-        //        }
-        //    }
-
-        //    private bool VerifyPassword(string inputPassword, string hashedPassword)
-        //    {
-        //        return inputPassword.Equals(hashedPassword);
-        //    }
+                Response.Redirect(redirectUrl);
+            }
+        }
 
         private void ShowErrorMessage(string message)
-        {
-            string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";
-            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", script, true);
+            {
+                string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", script, true);
+            }
         }
-    }
-}
+    } 
+
     
