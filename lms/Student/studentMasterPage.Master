@@ -65,7 +65,21 @@
                 <div class="item">
                     <a href="notifications.aspx"><i class="fa fa-bell"></i>Notifications</a>
                 </div>
-              
+                <div class="item">
+                    <a href="../sis/SISPAGES/SIS_studentSide/AcademicCalendar.aspx"><i class="fa fa-bell"></i>Academic Calendar</a>
+                </div>
+                <div class="item">
+                    <a href="../sis/SISPAGES/SIS_studentSide/ViewGrades.aspx"><i class="fa fa-bell"></i>View Grades</a>
+                </div>
+                <div class="item">
+                    <a href="../sis/SISPAGES/SIS_studentSide/StudentRegistration.aspx"><i class="fa fa-bell"></i>Student Registration</a>
+                </div>
+                <div class="item">
+                    <a href="../sis/SISPAGES/SIS_studentSide/EditProfile.aspx"><i class="fa fa-bell"></i>Edit Profile</a>
+                </div>
+                <div class="item">
+                    <a href="../sis/SISPAGES/SIS_studentSide/ChangePassword.aspx"><i class="fa fa-bell"></i>Change Password</a>
+                </div>     
             </div>
             </div>
         <main class="content">

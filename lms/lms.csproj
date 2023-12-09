@@ -259,8 +259,20 @@
     <Content Include="sis\Resources\NH_BACKGROUND.jpeg" />
     <Content Include="sis\scripts\ai.0.22.9-build00167.js" />
     <Content Include="sis\scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="sis\SISPAGES\AddingGrades.aspx" />
     <Content Include="sis\SISPAGES\Admin.aspx" />
+    <Content Include="sis\SISPAGES\adminCalendar.aspx" />
+    <Content Include="sis\SISPAGES\ClassRegistration.aspx" />
+    <Content Include="sis\SISPAGES\CourseManagement.aspx" />
+    <Content Include="sis\SISPAGES\ManageUser.aspx" />
+    <Content Include="sis\SISPAGES\SectionManagement.aspx" />
+    <Content Include="sis\SISPAGES\SIS_studentSide\AcademicCalendar.aspx" />
+    <Content Include="sis\SISPAGES\SIS_studentSide\ChangePassword.aspx" />
+    <Content Include="sis\SISPAGES\SIS_studentSide\EditProfile.aspx" />
+    <Content Include="sis\SISPAGES\SIS_studentSide\StudentRegistration.aspx" />
+    <Content Include="sis\SISPAGES\SIS_studentSide\ViewGrades.aspx" />
     <Content Include="sis\SISPAGES\StudentManagement.aspx" />
+    <Content Include="sis\SISPAGES\SubjectModule.aspx" />
     <Content Include="sis\Styles\sweetalert.css" />
     <Content Include="Student\ArchivedClasses.aspx" />
     <Content Include="Student\Classworks.aspx" />
@@ -642,6 +654,13 @@
       <DependentUpon>AdminLayout.Master</DependentUpon>
     </Compile>
     <Compile Include="RouteConfig.cs" />
+    <Compile Include="sis\SISPAGES\AddingGrades.aspx.cs">
+      <DependentUpon>AddingGrades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\AddingGrades.aspx.designer.cs">
+      <DependentUpon>AddingGrades.aspx</DependentUpon>
+    </Compile>
     <Compile Include="sis\SISPAGES\Admin.aspx.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -649,13 +668,91 @@
     <Compile Include="sis\SISPAGES\Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="sis\SISPAGES\adminCalendar.aspx.cs">
+      <DependentUpon>adminCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\adminCalendar.aspx.designer.cs">
+      <DependentUpon>adminCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\ClassRegistration.aspx.cs">
+      <DependentUpon>ClassRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\ClassRegistration.aspx.designer.cs">
+      <DependentUpon>ClassRegistration.aspx</DependentUpon>
+    </Compile>
     <Compile Include="sis\SISPAGES\ConnectionClass.cs" />
+    <Compile Include="sis\SISPAGES\CourseManagement.aspx.cs">
+      <DependentUpon>CourseManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\CourseManagement.aspx.designer.cs">
+      <DependentUpon>CourseManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\Event.cs" />
+    <Compile Include="sis\SISPAGES\ManageUser.aspx.cs">
+      <DependentUpon>ManageUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\ManageUser.aspx.designer.cs">
+      <DependentUpon>ManageUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SectionManagement.aspx.cs">
+      <DependentUpon>SectionManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SectionManagement.aspx.designer.cs">
+      <DependentUpon>SectionManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\AcademicCalendar.aspx.cs">
+      <DependentUpon>AcademicCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\AcademicCalendar.aspx.designer.cs">
+      <DependentUpon>AcademicCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\EditProfile.aspx.cs">
+      <DependentUpon>EditProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\EditProfile.aspx.designer.cs">
+      <DependentUpon>EditProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\StudentRegistration.aspx.cs">
+      <DependentUpon>StudentRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\StudentRegistration.aspx.designer.cs">
+      <DependentUpon>StudentRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\ViewGrades.aspx.cs">
+      <DependentUpon>ViewGrades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SIS_studentSide\ViewGrades.aspx.designer.cs">
+      <DependentUpon>ViewGrades.aspx</DependentUpon>
+    </Compile>
     <Compile Include="sis\SISPAGES\StudentManagement.aspx.cs">
       <DependentUpon>StudentManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="sis\SISPAGES\StudentManagement.aspx.designer.cs">
       <DependentUpon>StudentManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SubjectModule.aspx.cs">
+      <DependentUpon>SubjectModule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sis\SISPAGES\SubjectModule.aspx.designer.cs">
+      <DependentUpon>SubjectModule.aspx</DependentUpon>
     </Compile>
     <Compile Include="Student\ArchivedClasses.aspx.cs">
       <DependentUpon>ArchivedClasses.aspx</DependentUpon>

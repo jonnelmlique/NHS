@@ -45,7 +45,7 @@ namespace lms.sis.SISPAGES
                     InsertEmergencyContact(connection, transaction, randomDigits);
                     InsertUser(connection, transaction, randomDigits, fullname);
                     transaction.Commit();
-                    ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Good job!','recorded!', 'success')", true);
+                    ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Good job!','Recorded!', 'success')", true);
                     ClearInputValues(this);
                 }
                 catch (Exception ex)
@@ -304,7 +304,7 @@ namespace lms.sis.SISPAGES
         protected void Logout_Click(object sender, EventArgs e)
         {
             Session.Clear();
-            Response.Redirect("~/WebForm1.aspx");
+            Response.Redirect("/Account/Logout.aspx");
         }
 
     }

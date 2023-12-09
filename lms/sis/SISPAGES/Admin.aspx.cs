@@ -95,7 +95,7 @@ namespace lms.sis.SISPAGES
         protected void Logout_Click(object sender, EventArgs e)
         {
             Session.Clear();
-            Response.Redirect("~/WebForm1.aspx");
+            Response.Redirect("/Account/Logout.aspx");
         }
 
         protected void cancel_Click(object sender, EventArgs e)

@@ -21,7 +21,7 @@ namespace lms.LOGIN
             string pass = txtpassword.Text;
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("server=localhost;username=root;database=ref;password=''"))
+                using (MySqlConnection conn = new MySqlConnection("server=localhost;username=root;database=learninghub;password=''"))
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);

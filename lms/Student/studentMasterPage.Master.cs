@@ -35,6 +35,7 @@ namespace lms.Student
                     {
                         string userEmail = Session["LoggedInUser"] as string;
 
+
                         if (!string.IsNullOrEmpty(userEmail))
                         {
                             lblUserEmail.Text = userEmail;
