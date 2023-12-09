@@ -46,10 +46,6 @@ namespace lms.Professor
                 {
                     con.Open();
 
-
-
-
-
                     string query = "SELECT materialsid, materialsname, teacheremail, instructions, duedate, topic, posttype, points, dateposted, teachername FROM learningmaterials " +
                                    "WHERE roomid = @roomid AND materialsid = @materialsid";
 
@@ -271,7 +267,7 @@ namespace lms.Professor
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT profileimage FROM users WHERE email = @userEmail";
+                string query = "SELECT profileimage FROM lmsusers WHERE email = @userEmail";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {

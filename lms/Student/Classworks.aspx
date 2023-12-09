@@ -29,7 +29,7 @@
                         <ItemTemplate>
                             <div class="materials-box">
                                 <div class="title">
-                                    <h2><%# Eval("materialsname") %> - <%# Eval("posttype") %></h2>
+                                    <h2><%# Eval("materialsname") %> - <%# Eval("posttype") %> - <%# Eval("topic") %></h2>
                                 </div>
                                 <div class="date-points">
                                     <div class="points">
