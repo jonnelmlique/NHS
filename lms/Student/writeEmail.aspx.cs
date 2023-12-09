@@ -33,6 +33,12 @@ namespace lms.Student
             string subjects = txtsubject.Text;
             string messageText = txtMessage.Text;
             string recipientEmail = emailtxt.Text;
+            
+            if (string.IsNullOrEmpty(subjects) || string.IsNullOrEmpty(messageText))
+            {
+                ShowErrorMessage("Subject and message and email are required.");
+                return;
+            }
 
             try
             {

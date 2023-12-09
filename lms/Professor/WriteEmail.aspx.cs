@@ -30,9 +30,17 @@ namespace lms.Professor
 
         protected void btnSendMessage_Click(object sender, EventArgs e)
         {
+
+
             string subjects = txtsubject.Text;
             string messageText = txtMessage.Text;
             string recipientEmail = emailtxt.Text;
+            
+            if (string.IsNullOrEmpty(subjects) || string.IsNullOrEmpty(messageText))
+            {
+                ShowErrorMessage("Subject and message and email are required.");
+                return;
+            }
 
             try
             {

@@ -632,6 +632,7 @@ namespace lms.Student
                                         string fileName = Path.GetFileName(file.FileName);
                                         string fileType = Path.GetExtension(file.FileName);
                                         byte[] fileData = file.FileBytes;
+
                                         string checkDuplicateQuery = "SELECT COUNT(*) FROM studentwork WHERE materialsid = @materialsid AND teacherid = @teacherid AND studentid = @studentid AND roomid = @roomid";
 
                                         using (MySqlCommand checkDuplicateCommand = new MySqlCommand(checkDuplicateQuery, con))

@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using AjaxControlToolkit.HtmlEditor.ToolbarButtons;
+using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.UI;
@@ -165,6 +167,13 @@ namespace lms.sis.SISPAGES
 
         private void InsertUser(MySqlConnection connection, MySqlTransaction transaction, int randomDigits, string fullname)
         {
+
+            string email = Email.Text;
+            string password = Contact.Text;
+            string toEmail = Email.Text;
+
+            SendEmail(toEmail, email, password);
+
             string InsertUsers = "INSERT INTO `manageuser`(`UserID`, `Name`,`Email`,`Password`,`Role`) VALUES (@value1, @value2,@value3, @value4,@value5)";
             using (MySqlCommand cmd4 = new MySqlCommand(InsertUsers, connection, transaction))
             {
@@ -188,6 +197,42 @@ namespace lms.sis.SISPAGES
                 cmd.Parameters.AddWithValue("@pFileExtension", Path.GetExtension(fileName));
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        private void SendEmail(string toEmail, string fromEmail, string password)
+        {
+            string subject = "Your Account Details";
+            string body = $"Your account has been created.\n\nEmail: {fromEmail}\nPassword: {password}";
+
+            MailMessage mail = new MailMessage("novalichesseniorhighschool@gmail.com", toEmail, subject, body);
+
+            mail.IsBodyHtml = false;
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587;
+            smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschool@gmail.com", "jpscuyqtbmgpkcqw");
+            smtpClient.EnableSsl = true;
+
+            try
+            {
+                smtpClient.Send(mail);
+                ShowSuccessMessage("Account created successfully. An email has been sent with account details.");
+
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error sending email: " + ex.Message);
+            }
+        }
+        private void ShowErrorMessage(string message)
+        {
+            string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", script, true);
+        }
+        private void ShowSuccessMessage(string message)
+        {
+            string script = $"Swal.fire({{ icon: 'success', text: '{message}' }})";
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", script, true);
         }
         private void ClearInputValues(Control parent)
         {
