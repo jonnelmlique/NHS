@@ -24,7 +24,7 @@ namespace lms.Professor
                         using (MySqlConnection con = new MySqlConnection(connectionString))
                         {
                             con.Open();
-                            string query = "SELECT sender, subject, message FROM notification WHERE notifid = @notifid";
+                            string query = "SELECT sender, subject, message FROM lmsnotification WHERE notifid = @notifid";
 
                             using (MySqlCommand command = new MySqlCommand(query, con))
                             {

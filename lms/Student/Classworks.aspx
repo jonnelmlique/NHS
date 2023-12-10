@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="date">
                                         <span>
-                                            <p>Due Date: <%# Eval("duedate", "{0:yyyy-MM-dd}") %></p>
+                                    <p>Due Date: <%# Eval("duedate") == DBNull.Value ? "No Due" : Eval("duedate", "{0:yyyy-MM-dd}") %></p>
                                         </span>
                                     </div>
                                 </div>

@@ -177,6 +177,7 @@ namespace lms.sis.SISPAGES
 
         protected void MUupdate_Click(object sender, EventArgs e)
         {
+            //new add emailcheack
             int selectedIndex = Grid.SelectedIndex;
             if (selectedIndex >= 0)
             {
@@ -187,11 +188,25 @@ namespace lms.sis.SISPAGES
                     ConnectionClass conn = new ConnectionClass();
                     using (MySqlConnection connection = conn.GetConnection())
                     {
-                        //UserID, Name, Email, Password, Role, ImageName
                         string updatequery = "UPDATE `manageuser` SET `Name` = @Name, `Email` = @Email, `Password` = @Password, `Role` = @Role WHERE `UserID` = @UserID";
                         try
                         {
                             connection.Open();
+
+                            string checkEmailQuery = "SELECT COUNT(*) FROM manageuser WHERE Email = @Email AND UserID != @UserID";
+                            using (MySqlCommand checkEmailCommand = new MySqlCommand(checkEmailQuery, connection))
+                            {
+                                checkEmailCommand.Parameters.AddWithValue("@Email", MUemail.Text);
+                                checkEmailCommand.Parameters.AddWithValue("@UserID", UserID);
+                                int emailCount = Convert.ToInt32(checkEmailCommand.ExecuteScalar());
+
+                                if (emailCount > 0)
+                                {
+                                    ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Email already exists.','Please choose a different email address.','error')", true);
+                                    return;
+                                }
+                            }
+
                             using (MySqlCommand command = new MySqlCommand(updatequery, connection))
                             {
                                 command.Parameters.AddWithValue("@UserID", UserID);
@@ -231,6 +246,61 @@ namespace lms.sis.SISPAGES
                 }
             }
         }
+        //old
+        //    int selectedIndex = Grid.SelectedIndex;
+        //    if (selectedIndex >= 0)
+        //    {
+        //        DataKey selectedDataKey = Grid.DataKeys[selectedIndex];
+        //        if (selectedDataKey != null)
+        //        {
+        //            int UserID = Convert.ToInt32(selectedDataKey["UserID"]);
+        //            ConnectionClass conn = new ConnectionClass();
+        //            using (MySqlConnection connection = conn.GetConnection())
+        //            {
+        //                //UserID, Name, Email, Password, Role, ImageName
+        //                string updatequery = "UPDATE `manageuser` SET `Name` = @Name, `Email` = @Email, `Password` = @Password, `Role` = @Role WHERE `UserID` = @UserID";
+        //                try
+        //                {
+        //                    connection.Open();
+        //                    using (MySqlCommand command = new MySqlCommand(updatequery, connection))
+        //                    {
+        //                        command.Parameters.AddWithValue("@UserID", UserID);
+        //                        command.Parameters.AddWithValue("@Name", MUname.Text);
+        //                        command.Parameters.AddWithValue("@Email", MUemail.Text);
+        //                        command.Parameters.AddWithValue("@Password", txtpass.Text);
+        //                        command.Parameters.AddWithValue("@Role", MUrole.Text);
+
+        //                        int rowsAffected = command.ExecuteNonQuery();
+
+        //                        if (rowsAffected > 0)
+        //                        {
+        //                            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Good job!','Changes Have Been Saved!', 'success')", true);
+        //                        }
+        //                        else
+        //                        {
+        //                            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Something went wrong...','Please try again', 'error')", true);
+        //                        }
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "swal('Something went wrong...','Please try again','error')", true);
+        //                }
+        //                finally
+        //                {
+        //                    rebind();
+        //                    Grid.SelectedIndex = -1;
+        //                    MUid.Text = "";
+        //                    MUname.Text = "";
+        //                    MUemail.Text = "";
+        //                    txtpass.Text = "";
+        //                    MUrole.Text = "";
+        //                    MUsave.Enabled = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         protected void MUdelete_Click(object sender, EventArgs e)
         {

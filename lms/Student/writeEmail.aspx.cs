@@ -33,6 +33,12 @@ namespace lms.Student
             string subjects = txtsubject.Text;
             string messageText = txtMessage.Text;
             string recipientEmail = emailtxt.Text;
+            
+            if (string.IsNullOrEmpty(subjects) || string.IsNullOrEmpty(messageText))
+            {
+                ShowErrorMessage("Subject and message and email are required.");
+                return;
+            }
 
             try
             {
@@ -86,7 +92,7 @@ namespace lms.Student
                                     {
                                         con.Open();
 
-                                        string insertQuery = "INSERT INTO notification (sender, receiver, subject, message, date) VALUES (@sender, @Receiver, @Subject, @Message, @Date)";
+                                        string insertQuery = "INSERT INTO lmsnotification (sender, receiver, subject, message, date) VALUES (@sender, @Receiver, @Subject, @Message, @Date)";
 
                                         using (MySqlCommand cmd = new MySqlCommand(insertQuery, con))
                                         {

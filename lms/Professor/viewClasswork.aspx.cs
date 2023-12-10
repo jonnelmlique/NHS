@@ -64,20 +64,15 @@ namespace lms.Professor
                                 lbldateposted.Text = reader["dateposted"].ToString();
                                 lblteacher.Text = reader["teachername"].ToString();
                                 lblinstructions.Text = reader["instructions"].ToString();
+                                //lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
+                                //    ? string.Empty
+                                //    : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
-                                    ? string.Empty
-                                    : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
+                                ? "No Due"
+                                : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lblpoints.Text = reader["points"].ToString();
 
-                                //txtinstructions.Text = reader["instructions"].ToString();
-                                //txtduedate.Text = reader["duedate"].ToString();
-                                //txttopic.Text = reader["topic"].ToString();
-
-
-
-                                //// Retrieve and set points
-                                //int points = Convert.ToInt32(reader["points"]);
-                                //drdpoints.SelectedValue = points.ToString();
+                             
                             }
                         }
                     }
