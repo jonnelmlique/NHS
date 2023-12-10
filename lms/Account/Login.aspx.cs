@@ -29,12 +29,16 @@ namespace lms.LOGIN
                     conn.Open();
 
                     // Check in the manageuser table
-                    MySqlCommand manageuserCmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);
+                    //MySqlCommand manageuserCmd = new MySqlCommand("SELECT * FROM manageuser WHERE Email=@username AND Password=@password", conn);
+                    MySqlCommand manageuserCmd = new MySqlCommand("SELECT * FROM manageuser WHERE BINARY Email=@username AND BINARY Password=@password", conn);
+
                     manageuserCmd.Parameters.AddWithValue("@username", un);
                     manageuserCmd.Parameters.AddWithValue("@password", pass);
 
                     // Check in the users table
-                    MySqlCommand usersCmd = new MySqlCommand("SELECT * FROM lmsusers WHERE email=@username AND password=@password", conn);
+                    MySqlCommand usersCmd = new MySqlCommand("SELECT * FROM lmsusers WHERE BINARY email=@username AND BINARY password=@password", conn);
+
+                    //MySqlCommand usersCmd = new MySqlCommand("SELECT * FROM lmsusers WHERE email=@username AND password=@password", conn);
                     usersCmd.Parameters.AddWithValue("@username", un);
                     usersCmd.Parameters.AddWithValue("@password", pass);
 
@@ -133,6 +137,8 @@ namespace lms.LOGIN
                             Session["TeacherLastName"] = teacherInfoReader.GetString("lastname");
                             Session["TeacherEmail"] = teacherInfoReader.GetString("email");
                             Session["LoggedInUserID"] = teacherInfoReader.GetInt32("teacherid").ToString();
+                            //Session["LoggedInUserEmail"] = teacherInfoReader.GetInt32("email").ToString();
+
                         }
                     }
                 }
