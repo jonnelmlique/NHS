@@ -303,7 +303,7 @@
             </div>
 
             <div class="data">
-                <p runat="server"id="RegFormSchoolYear"></p>
+                <p runat="server" id="RegFormSchoolYear"></p>
             </div>
         </div>
     </div>

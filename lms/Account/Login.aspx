@@ -41,7 +41,7 @@
                         <span>
                             <input type="checkbox" onclick="myFunction()" />
                             Show Password</span>
-                        <a href="Forgot_Password.aspx">Forgot Password?</a>
+                        <a href="Account/Forgot_Password.aspx">Forgot Password?</a>
                     </div>
                     <asp:Button ID="btnlogin" CssClass="btn" runat="server" Text="LOGIN" OnClick="btnlogin_Click" />
                 </div>
