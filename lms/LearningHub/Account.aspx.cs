@@ -14,49 +14,75 @@ namespace lms.LearningHub
         {
             if (!IsPostBack)
             {
-                if (Session["UID"] != null)
+                try
                 {
-                    string uidValue = Session["UID"].ToString();
-
-                    string connectionString = "Server=localhost;Database=learninghubwebdb;User=root;Password=;";
-
-                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    if (Session["ID"] != null)
                     {
-                        connection.Open();
+                        string uidValue = Session["ID"].ToString();
+                        string yearlevel = Session["AcademicInfoYearLevel"].ToString();
+                        string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
 
-                        string query = "SELECT name, yearlevel, age, email, contact, availability, sex, socmed, location, studId, bio, pfp FROM users WHERE uid = @UID";
-
-                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        using (MySqlConnection connection = new MySqlConnection(connectionString))
                         {
-                            command.Parameters.AddWithValue("@UID", uidValue);
+                            connection.Open();
 
-                            using (MySqlDataReader reader = command.ExecuteReader())
+                            string query = "SELECT * FROM student_info WHERE studentId  = @ID";
+                            string imageQuery = "SELECT imageData FROM tblimages WHERE studentId = @ID;";
+
+                            using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
-                                if (reader.Read())
+                                command.Parameters.AddWithValue("@ID", uidValue);
+
+                                using (MySqlDataReader reader = command.ExecuteReader())
                                 {
-                                    InfoName.Text = "Name: " + reader["name"].ToString();
-                                    InfoStudId.Text = "Student ID: " + reader["studId"].ToString();
-                                    InfoAge.Text = "Age: " + reader["age"].ToString();
-                                    InfoSex.Text = "Sex: " + reader["sex"].ToString();
-                                    InfoLocation.Text = "Location: " + reader["location"].ToString();
-                                    InfoYearLvl.Text = "Year Level: " + reader["yearlevel"].ToString();
-                                    ContactEmail.Text = "Email: " + reader["email"].ToString();
-                                    ContactNumber.Text = "Contact Number: " + reader["contact"].ToString();
-                                    ContactSocmed.Text = "Social Media: " + reader["socmed"].ToString();
-
-                                    string profilePictureLink = reader["pfp"].ToString();
-                                    ImagePF.ImageUrl = GetDirectLinkFromGoogleDrive(profilePictureLink);
-
-                                    string userBio = reader["bio"].ToString();
-                                    ContactBioLabel.Text = userBio;
+                                    if (reader.Read())
+                                    {
+                                        string birthdateString = reader["birthdate"].ToString();
+                                        DateTime birthdate = DateTime.Parse(birthdateString);
+                                        DateTime currentDate = DateTime.Now;
+                                        int age = currentDate.Year - birthdate.Year - (currentDate.Month < birthdate.Month || (currentDate.Month == birthdate.Month && currentDate.Day < birthdate.Day) ? 1 : 0);
+                                        InfoName.Text = "Name: " + reader["name"].ToString();
+                                        InfoStudId.Text = "Student ID: " + reader["studentId"].ToString();
+                                        InfoAge.Text = "Age: " + age;
+                                        InfoSex.Text = "Sex: " + reader["gender"].ToString();
+                                        InfoLocation.Text = "Location: " + reader["address"].ToString();
+                                        InfoYearLvl.Text = "Year Level: " + yearlevel;
+                                        ContactEmail.Text = "Email: " + reader["Email"].ToString();
+                                        ContactNumber.Text = "Contact Number: " + reader["contact"].ToString();
+                                        ContactSocmed.Text = "Social Media: " + reader["Email"].ToString();
+                                        ContactBioLabel.Text = reader["Bio"].ToString();
+                                        reader.Close();
+                                    }
+                                }
+                                if (uidValue != null)
+                                {
+                                    using (MySqlCommand imageCommand = new MySqlCommand(imageQuery, connection))
+                                    {
+                                        imageCommand.Parameters.AddWithValue("@ID", uidValue);
+                                        MySqlDataReader imageReader = imageCommand.ExecuteReader();
+                                        if (imageReader.HasRows && imageReader.Read())
+                                        {
+                                            byte[] imageData = (byte[])imageReader["imageData"];
+                                            if (imageData != null && imageData.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(imageData);
+                                                ImagePF.ImageUrl = "data:image/jpeg;base64," + base64String;
+                                                imageReader.Close();
+                                            }
+                                            else
+                                            {
+                                                ImagePF.ImageUrl = "Resources/cat.PNG";
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-
+                    Response.Write(ex.Message + " Something Went Wrong");
                 }
             }
         }
@@ -82,27 +108,69 @@ namespace lms.LearningHub
         {
             string newBio = BioTextarea.Text;
 
-            UpdateBioInDatabase(newBio);
-
+            if (BioExistsInDatabase())
+            {
+                UpdateBioInDatabase(newBio);
+            }
+            else
+            {
+                InsertBioIntoDatabase(newBio);
+            }
             string updatedBio = RetrieveBioFromDatabase();
-
             ContactBioLabel.Text = updatedBio;
-
-
         }
+
         private void UpdateBioInDatabase(string newBio)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;User=root;Password=;";
-            string query = "UPDATE users SET bio = @Bio WHERE uid = @UID";
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
+            string query = "UPDATE student_info SET Bio = @Bio WHERE studentId = @ID";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    string uidValue = Session["UID"].ToString();
+                    string uidValue = Session["ID"].ToString();
 
                     command.Parameters.AddWithValue("@Bio", newBio);
-                    command.Parameters.AddWithValue("@UID", uidValue);
+                    command.Parameters.AddWithValue("@ID", uidValue);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        private bool BioExistsInDatabase()
+        {
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
+            string query = "SELECT COUNT(Bio) FROM student_info WHERE studentId = @ID";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    string uidValue = Session["ID"].ToString();
+                    command.Parameters.AddWithValue("@ID", uidValue);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    return count > 0;
+                }
+            }
+        }
+        private void InsertBioIntoDatabase(string newBio)
+        {
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
+            string query = "UPDATE student_info SET Bio = @Bio WHERE studentId = @ID";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    string uidValue = Session["ID"].ToString();
+
+                    command.Parameters.AddWithValue("@ID", uidValue);
+                    command.Parameters.AddWithValue("@Bio", newBio);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -111,25 +179,32 @@ namespace lms.LearningHub
         }
         private string RetrieveBioFromDatabase()
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;User=root;Password=;";
-            string query = "SELECT bio FROM users WHERE uid = @UID";
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
+            string query = "SELECT Bio FROM student_info WHERE studentId = @ID";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    string uidValue = Session["UID"].ToString();
+                    if (Session["ID"] != null)
+                    {
+                        string uidValue = Session["ID"].ToString();
+                        command.Parameters.AddWithValue("@ID", uidValue);
 
-                    command.Parameters.AddWithValue("@UID", uidValue);
+                        connection.Open();
 
-                    connection.Open();
+                        string bio = command.ExecuteScalar()?.ToString() ?? "";
 
-                    string bio = command.ExecuteScalar().ToString();
-
-                    return bio;
+                        return bio;
+                    }
+                    else
+                    {
+                        return "Student UID not found in session.";
+                    }
                 }
             }
         }
+
         protected void logout_Click(object sender, EventArgs e)
         {
             Session.Abandon();

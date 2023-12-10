@@ -65,7 +65,9 @@
                 <div class="item">
                     <a href="notifications.aspx"><i class="fa fa-bell"></i>Notifications</a>
                 </div>
-                 
+                <div class="item">
+                    <a href="../LearningHub/Dashboard.aspx">Learning Hub</a>
+                </div>
             </div>
             </div>
         <main class="content">
