@@ -38,6 +38,10 @@
                 </div>
                 <div class="points-date">
                     <asp:Label ID="lblpoints" runat="server" Text="" CssClass="span"></asp:Label>'
+
+                  <asp:Label ID="lblstatus" runat="server" Text="" CssClass="span"></asp:Label>'
+                    <asp:Label ID="lblgradepoints" runat="server" Text="" CssClass="span"></asp:Label>'
+
               <asp:Label ID="lbldue" runat="server" Text="" CssClass="span"></asp:Label>
 
 

@@ -161,7 +161,7 @@ namespace lms.Account
 
         protected void btnchangeimage_Click(object sender, EventArgs e)
         {
-            string UserID = Session["ID"] as string;
+            string UserID = Session["LoggedInUserID"] as string;
 
             try
             {
@@ -173,12 +173,11 @@ namespace lms.Account
                     string checkImageQuery = "SELECT COUNT(*) FROM tblimages WHERE studentId = @studentID";
                     using (MySqlCommand checkCmd = new MySqlCommand(checkImageQuery, connection))
                     {
-                        checkCmd.Parameters.AddWithValue("@studentID", Session["ID"]);
+                        checkCmd.Parameters.AddWithValue("@studentID", Session["LoggedInUserID"]);
                         int imageCount = Convert.ToInt32(checkCmd.ExecuteScalar());
 
                         if (imageCount > 0)
                         {
-                            // Image exists, update image information
                             byte[] imageData = FileUpload1.FileBytes;
                             int imageSize = FileUpload1.PostedFile.ContentLength;
                             string imageName = FileUpload1.FileName;
@@ -186,7 +185,7 @@ namespace lms.Account
                             string updateQuery = "CALL spUpdateImage(@studentID, @imageName, @imageSize, @imageData)";
                             using (MySqlCommand cmd = new MySqlCommand(updateQuery, connection))
                             {
-                                cmd.Parameters.AddWithValue("@studentID", Session["ID"]);
+                                cmd.Parameters.AddWithValue("@studentID", Session["LoggedInUserID"]);
                                 cmd.Parameters.AddWithValue("@imageName", imageName);
                                 cmd.Parameters.AddWithValue("@imageSize", imageSize);
                                 cmd.Parameters.AddWithValue("@imageData", imageData);
@@ -195,15 +194,14 @@ namespace lms.Account
                         }
                         else
                         {
-                            // Image doesn't exist, insert a new image
                             byte[] imageData = FileUpload1.FileBytes;
                             int imageSize = FileUpload1.PostedFile.ContentLength;
                             string imageName = FileUpload1.FileName;
 
-                            string insertQuery = "CALL spUploadImage(@studentID, @imageName, @imageSize, @imageData)";
+                            string insertQuery = "CALL spUploadImage(@imageName, @imageSize, @imageData, @studentID)";
                             using (MySqlCommand cmd = new MySqlCommand(insertQuery, connection))
                             {
-                                cmd.Parameters.AddWithValue("@studentID", Session["ID"]);
+                                cmd.Parameters.AddWithValue("@studentID", Session["LoggedInUserID"]);
                                 cmd.Parameters.AddWithValue("@imageName", imageName);
                                 cmd.Parameters.AddWithValue("@imageSize", imageSize);
                                 cmd.Parameters.AddWithValue("@imageData", imageData);
@@ -211,7 +209,7 @@ namespace lms.Account
                             }
                         }
 
-                        // Update the displayed image
+                        // Update the displayed image 
                         DisplayUploadedImage(connection, UserID);
                         // Get and display the user's profile image
                         byte[] profileImageBytes = GetUserProfileImage(UserID);

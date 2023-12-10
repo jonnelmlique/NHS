@@ -319,6 +319,7 @@
     <Content Include="Professor\editAnnouncement.aspx" />
     <Content Include="Professor\viewClasswork.aspx" />
     <Content Include="Professor\WriteEmail.aspx" />
+    <Content Include="Resources\adminprofile.png" />
     <Content Include="sis\css\bootstrap-grid.css" />
     <Content Include="sis\css\bootstrap-grid.min.css" />
     <Content Include="sis\css\bootstrap-grid.rtl.css" />

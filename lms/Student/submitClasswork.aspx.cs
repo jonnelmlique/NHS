@@ -26,7 +26,7 @@ namespace lms.Student
                         PopulateFileGridView(roomId, materialsId);
                         DisplayUserProfileImage();
                         DisplayComment();
-
+                        DisplayPoints(roomId, materialsId);
 
 
                         PopulateFileGridView1(roomId, materialsId);
@@ -86,9 +86,12 @@ namespace lms.Student
                                 lblpost.Text = $"{materialsName} - {reader["posttype"].ToString()}"; lbldateposted.Text = reader["dateposted"].ToString();
                                 lblteacher.Text = reader["teachername"].ToString();
                                 lblinstructions.Text = reader["instructions"].ToString();
+                                // lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
+                                //? string.Empty
+                                //  : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lbldue.Text = (reader["duedate"] is DBNull || reader["duedate"] == null)
-                               ? string.Empty
-                                 : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
+                               ? "No Due"
+                               : Convert.ToDateTime(reader["duedate"]).ToString("yyyy-MM-dd");
                                 lblpoints.Text = reader["points"].ToString();
 
 
@@ -102,6 +105,46 @@ namespace lms.Student
                 ShowErrorMessage("An error occurred while retrieving learningmaterials.");
             }
         }
+
+
+        private void DisplayPoints(int roomId, int materialsId)
+        {
+            try
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string query = "SELECT materialsid, points, gradestatus FROM studentwork " +
+                                   "WHERE roomid = @roomid AND materialsid = @materialsid";
+
+                    using (MySqlCommand command = new MySqlCommand(query, con))
+                    {
+                        command.Parameters.AddWithValue("@roomid", roomId);
+                        command.Parameters.AddWithValue("@materialsid", materialsId);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                lblgradepoints.Text = reader["points"].ToString();
+                                lblstatus.Text = reader["gradestatus"].ToString().ToUpper();
+
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("An error occurred while retrieving learningmaterials.");
+            }
+        }
+
         private void ShowErrorMessage(string message)
         {
             string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";
@@ -589,53 +632,75 @@ namespace lms.Student
                                         string fileName = Path.GetFileName(file.FileName);
                                         string fileType = Path.GetExtension(file.FileName);
                                         byte[] fileData = file.FileBytes;
-                                        //if (Request.Files.Count > 0)
-                                        //{
-                                        //    try
-                                        //    {
-                                        //        for (int i = 0; i < Request.Files.Count; i++)
-                                        //        {
-                                        //            HttpPostedFile uploadedFile = Request.Files[i];
 
-                                        //            // Extract information about the uploaded file
-                                        //            string fileName = Path.GetFileName(uploadedFile.FileName);
-                                        //            string fileType = Path.GetExtension(fileName);
-                                        //            byte[] fileData;
+                                        string checkDuplicateQuery = "SELECT COUNT(*) FROM studentwork WHERE materialsid = @materialsid AND teacherid = @teacherid AND studentid = @studentid AND roomid = @roomid";
 
-                                        //            // Read the file data into a byte array
-                                        //            using (BinaryReader binaryReader = new BinaryReader(uploadedFile.InputStream))
-                                        //            {
-                                        //                fileData = binaryReader.ReadBytes(uploadedFile.ContentLength);
-                                        //            }
+                                        using (MySqlCommand checkDuplicateCommand = new MySqlCommand(checkDuplicateQuery, con))
+                                        {
+                                            checkDuplicateCommand.Parameters.AddWithValue("@materialsid", materialsid);
+                                            checkDuplicateCommand.Parameters.AddWithValue("@teacherid", teacherid);
+                                            checkDuplicateCommand.Parameters.AddWithValue("@studentid", studentid);
+                                            checkDuplicateCommand.Parameters.AddWithValue("@roomid", roomId);
 
-                                        string insertQuery = "INSERT INTO studentwork (materialsid, teacherid, studentid, roomid, teacheremail, studentemail, studentname, FileName, FileType, FileData, subjectname, materialsname, workstatus) " +
+                                            int duplicateCount = Convert.ToInt32(checkDuplicateCommand.ExecuteScalar());
+
+                                            if (duplicateCount > 0)
+                                            {
+                                                // Duplicate record found, handle accordingly (show an error message, etc.)
+                                                ShowErrorMessage("This work has already been submitted.");
+                                            }
+                                            else
+                                            {
+
+                                                //if (Request.Files.Count > 0)
+                                                //{
+                                                //    try
+                                                //    {
+                                                //        for (int i = 0; i < Request.Files.Count; i++)
+                                                //        {
+                                                //            HttpPostedFile uploadedFile = Request.Files[i];
+
+                                                //            // Extract information about the uploaded file
+                                                //            string fileName = Path.GetFileName(uploadedFile.FileName);
+                                                //            string fileType = Path.GetExtension(fileName);
+                                                //            byte[] fileData;
+
+                                                //            // Read the file data into a byte array
+                                                //            using (BinaryReader binaryReader = new BinaryReader(uploadedFile.InputStream))
+                                                //            {
+                                                //                fileData = binaryReader.ReadBytes(uploadedFile.ContentLength);
+                                                //            }
+
+                                                string insertQuery = "INSERT INTO studentwork (materialsid, teacherid, studentid, roomid, teacheremail, studentemail, studentname, FileName, FileType, FileData, subjectname, materialsname, workstatus) " +
                                                              "VALUES (@materialsid, @teacherid, @studentid, @roomid, @teacheremail, @studentemail, @studentname, @FileName, @FileType, @FileData, @subjectname, @materialsname, 'turnedin')";
 
-                                        using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
-                                        {
-                                            commandInsert.Parameters.AddWithValue("@materialsid", materialsid);
-                                            commandInsert.Parameters.AddWithValue("@teacherid", teacherid);
-                                            commandInsert.Parameters.AddWithValue("@studentid", studentid);
-                                            commandInsert.Parameters.AddWithValue("@roomid", roomId);
-                                            commandInsert.Parameters.AddWithValue("@teacheremail", teacheremail);
-                                            commandInsert.Parameters.AddWithValue("@studentEmail", studentEmail);
-                                            commandInsert.Parameters.AddWithValue("@studentname", fullname);
-                                            commandInsert.Parameters.AddWithValue("@fileName", fileName);
-                                            commandInsert.Parameters.AddWithValue("@fileType", fileType);
-                                            commandInsert.Parameters.AddWithValue("@fileData", fileData);
-                                            commandInsert.Parameters.AddWithValue("@subjectname", subjectname);
-                                            commandInsert.Parameters.AddWithValue("@materialsname", materialsname);
+                                                using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
+                                                {
+                                                    commandInsert.Parameters.AddWithValue("@materialsid", materialsid);
+                                                    commandInsert.Parameters.AddWithValue("@teacherid", teacherid);
+                                                    commandInsert.Parameters.AddWithValue("@studentid", studentid);
+                                                    commandInsert.Parameters.AddWithValue("@roomid", roomId);
+                                                    commandInsert.Parameters.AddWithValue("@teacheremail", teacheremail);
+                                                    commandInsert.Parameters.AddWithValue("@studentEmail", studentEmail);
+                                                    commandInsert.Parameters.AddWithValue("@studentname", fullname);
+                                                    commandInsert.Parameters.AddWithValue("@fileName", fileName);
+                                                    commandInsert.Parameters.AddWithValue("@fileType", fileType);
+                                                    commandInsert.Parameters.AddWithValue("@fileData", fileData);
+                                                    commandInsert.Parameters.AddWithValue("@subjectname", subjectname);
+                                                    commandInsert.Parameters.AddWithValue("@materialsname", materialsname);
 
-                                            commandInsert.ExecuteNonQuery();
+                                                    commandInsert.ExecuteNonQuery();
 
-                                            ShowSuccessMessage("Your Work have been successfully Added");
+                                                    ShowSuccessMessage("Your Work have been successfully Added");
 
-                                            PopulateFileGridView1(roomId, materialsId);
+                                                    PopulateFileGridView1(roomId, materialsId);
 
+                                                }
+
+                                                ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
+                                                //DisplayMaterials();
+                                            }
                                         }
-
-                                        ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
-                                        //DisplayMaterials();
                                     }
 
                                     catch (Exception ex)
