@@ -194,23 +194,23 @@ namespace lms.Student
                 }
             }
         }
-        protected void gvFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int rowIndex = gvFiles.SelectedIndex;
-            GridViewRow row = gvFiles.Rows[rowIndex];
+        //protected void gvFiles_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    int rowIndex = gvFiles.SelectedIndex;
+        //    GridViewRow row = gvFiles.Rows[rowIndex];
 
-            int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
-            byte[] fileData = RetrieveFileData(selectedFileID);
+        //    int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
+        //    byte[] fileData = RetrieveFileData(selectedFileID);
 
-            if (fileData != null)
-            {
-                Response.Clear();
-                Response.ContentType = "application/octet-stream";
-                Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
-                Response.BinaryWrite(fileData);
-                Response.End();
-            }
-        }
+        //    if (fileData != null)
+        //    {
+        //        Response.Clear();
+        //        Response.ContentType = "application/octet-stream";
+        //        Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
+        //        Response.BinaryWrite(fileData);
+        //        Response.End();
+        //    }
+        //}
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
@@ -633,24 +633,24 @@ namespace lms.Student
                                         string fileType = Path.GetExtension(file.FileName);
                                         byte[] fileData = file.FileBytes;
 
-                                        string checkDuplicateQuery = "SELECT COUNT(*) FROM studentwork WHERE materialsid = @materialsid AND teacherid = @teacherid AND studentid = @studentid AND roomid = @roomid";
+                                        //string checkDuplicateQuery = "SELECT COUNT(*) FROM studentwork WHERE materialsid = @materialsid AND teacherid = @teacherid AND studentid = @studentid AND roomid = @roomid";
 
-                                        using (MySqlCommand checkDuplicateCommand = new MySqlCommand(checkDuplicateQuery, con))
-                                        {
-                                            checkDuplicateCommand.Parameters.AddWithValue("@materialsid", materialsid);
-                                            checkDuplicateCommand.Parameters.AddWithValue("@teacherid", teacherid);
-                                            checkDuplicateCommand.Parameters.AddWithValue("@studentid", studentid);
-                                            checkDuplicateCommand.Parameters.AddWithValue("@roomid", roomId);
+                                        //using (MySqlCommand checkDuplicateCommand = new MySqlCommand(checkDuplicateQuery, con))
+                                        //{
+                                        //    checkDuplicateCommand.Parameters.AddWithValue("@materialsid", materialsid);
+                                        //    checkDuplicateCommand.Parameters.AddWithValue("@teacherid", teacherid);
+                                        //    checkDuplicateCommand.Parameters.AddWithValue("@studentid", studentid);
+                                        //    checkDuplicateCommand.Parameters.AddWithValue("@roomid", roomId);
 
-                                            int duplicateCount = Convert.ToInt32(checkDuplicateCommand.ExecuteScalar());
+                                        //    int duplicateCount = Convert.ToInt32(checkDuplicateCommand.ExecuteScalar());
 
-                                            if (duplicateCount > 0)
-                                            {
-                                                // Duplicate record found, handle accordingly (show an error message, etc.)
-                                                ShowErrorMessage("This work has already been submitted.");
-                                            }
-                                            else
-                                            {
+                                        //    if (duplicateCount > 0)
+                                        //    {
+                                        //        // Duplicate record found, handle accordingly (show an error message, etc.)
+                                        //        ShowErrorMessage("This work has already been submitted.");
+                                        //    }
+                                        //    else
+                                        //    {
 
                                                 //if (Request.Files.Count > 0)
                                                 //{
@@ -700,8 +700,8 @@ namespace lms.Student
                                                 ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
                                                 //DisplayMaterials();
                                             }
-                                        }
-                                    }
+                                    //    }
+                                    //}
 
                                     catch (Exception ex)
                                     {

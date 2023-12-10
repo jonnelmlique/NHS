@@ -204,13 +204,13 @@ namespace lms.sis.SISPAGES
             string subject = "Your Account Details";
             string body = $"Your account has been created.\n\nEmail: {fromEmail}\nPassword: {password}";
 
-            MailMessage mail = new MailMessage("novalichesseniorhighschool@gmail.com", toEmail, subject, body);
+            MailMessage mail = new MailMessage("novalichesseniorhighschoolnhs@gmail.com", toEmail, subject, body);
 
             mail.IsBodyHtml = false;
 
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
             smtpClient.Port = 587;
-            smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschool@gmail.com", "jpscuyqtbmgpkcqw");
+            smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschoolnhs@gmail.com", "kymucdmewcovazly");
             smtpClient.EnableSsl = true;
 
             try

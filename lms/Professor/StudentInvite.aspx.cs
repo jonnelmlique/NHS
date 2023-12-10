@@ -95,11 +95,11 @@ namespace lms.Professor
                 }
             }
         }
-        protected void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-            string searchTerm = TextBox1.Text;
-            BindStudentData(searchTerm);
-        }
+        //protected void TextBox1_TextChanged(object sender, EventArgs e)
+        //{
+        //    string searchTerm = TextBox1.Text;
+        //    BindStudentData(searchTerm);
+        //}
         protected void btnUpdateStatus_Click(object sender, EventArgs e)
         {
             try

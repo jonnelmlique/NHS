@@ -15,12 +15,12 @@
     <div class="classwork">
         <div class="class-head">
             <div class="drop-list1">
-                <asp:DropDownList ID="DropDownList1" runat="server" CssClass="d-list">
+                <%--<asp:DropDownList ID="DropDownList1" runat="server" CssClass="d-list">
                     <asp:ListItem Text="All Topics" Value="1" />
                     <asp:ListItem Text="Assignments" Value="2" />
                     <asp:ListItem Text="Quiz" Value="3" />
                     <asp:ListItem Text="Materials" Value="4" />
-                </asp:DropDownList>
+                </asp:DropDownList>--%>
             </div>
             <div class="drop-list2">
                 <a href="#" class="d-link" id="createRoomLink">Create Task</a>
@@ -91,6 +91,7 @@
                     <asp:RadioButton ID="rbassignment" runat="server" Text="Assignment" CssClass="rdb-post" GroupName="MaterialsGroup" />
                     <asp:RadioButton ID="rbquiz" runat="server" Text="Quiz" CssClass="rdb-post" GroupName="MaterialsGroup" />
                     <asp:RadioButton ID="rbmaterials" runat="server" Text="Materials" CssClass="rdb-post" GroupName="MaterialsGroup" />
+                   <asp:RadioButton ID="rbexam" runat="server" Text="Exam" CssClass="rdb-post" GroupName="MaterialsGroup" />
 
                 </div>
                 <div class="assign">

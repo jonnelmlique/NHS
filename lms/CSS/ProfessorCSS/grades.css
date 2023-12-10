@@ -15,7 +15,22 @@
     display:flex;
     align-items:center;
     padding:0 15px;
+    justify-content: space-between;
 }
+.submitted .works .btn-print{
+    padding: 10px 20px;
+    border-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.3s all ease;
+    background-color: maroon;
+}
+.submitted .works .btn-print:hover{
+    opacity: 0.5;
+}
+
+
 .submitted .works h2{
     font-family:'Times New Roman';
     font-size:30px;
@@ -42,11 +57,9 @@
 .gridview {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
     font-family: 'Arial', sans-serif;
     color: #333;
-    margin-top:0;
-}
+    }
 
     .gridview th, .gridview td {
         padding: 15px;

@@ -95,11 +95,11 @@ namespace lms.Admin
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
                     smtpClient.Port = 587;
                     smtpClient.UseDefaultCredentials = false;
-                    smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschool@gmail.com", "jpscuyqtbmgpkcqw");
+                    smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschoolnhs@gmail.com", "kymucdmewcovazly");
                     smtpClient.EnableSsl = true;
 
                     MailMessage mailMessage = new MailMessage();
-                    mailMessage.From = new MailAddress("novalichesseniorhighschool@gmail.com");
+                    mailMessage.From = new MailAddress("novalichesseniorhighschoolnhs@gmail.com");
                     mailMessage.To.Add(recipientEmail);
                     mailMessage.Subject = subject;
                     mailMessage.Body = messageText;
@@ -116,7 +116,7 @@ namespace lms.Admin
 
                         using (MySqlCommand cmd = new MySqlCommand(insertQuery, con))
                         {
-                            cmd.Parameters.AddWithValue("@sender", "novalichesseniorhighschool@gmail.com");
+                            cmd.Parameters.AddWithValue("@sender", "novalichesseniorhighschoolnhs@gmail.com");
                             cmd.Parameters.AddWithValue("@Receiver", recipientEmail);
                             cmd.Parameters.AddWithValue("@Subject", subject);
                             cmd.Parameters.AddWithValue("@Message", messageText);

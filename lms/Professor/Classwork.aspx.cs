@@ -171,10 +171,15 @@ namespace lms.Professor
                                 {
                                     posttype = "Materials";
                                 }
-
+                                else if (rbexam.Checked)
+                                {
+                                    posttype = "Exam";
+                                }
                                 string points = drdpoints.SelectedValue;
                                 string duedate = txtduedate.Text;
                                 string topic = txttopic.Text;
+
+
 
                                 if (file.HasFile)
                                 {
@@ -189,38 +194,91 @@ namespace lms.Professor
                                         string insertQuery = "INSERT INTO learningmaterials (roomid, teacherid, teacheremail, subjectname, materialsname, instructions, posttype, points, duedate, topic, FileName, FileType, FileData, teachername) " +
                                                              "VALUES (@roomid, @teacherid, @teacheremail, @subjectname, @materialsname, @instructions, @posttype, @points, @duedate, @topic, @fileName, @fileType, @fileData, @teachername)";
 
-                                            using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
-                                            {
-                                                commandInsert.Parameters.AddWithValue("@roomid", roomId);
-                                                commandInsert.Parameters.AddWithValue("@teacherid", teacherId);
-                                                commandInsert.Parameters.AddWithValue("@teacheremail", teacherEmail);
-                                                commandInsert.Parameters.AddWithValue("@subjectname", subjectname);
-                                                commandInsert.Parameters.AddWithValue("@materialsname", materialsname);
-                                                commandInsert.Parameters.AddWithValue("@instructions", instructions);
-                                                commandInsert.Parameters.AddWithValue("@posttype", posttype);
-                                                commandInsert.Parameters.AddWithValue("@points", points);
-                                                commandInsert.Parameters.AddWithValue("@duedate", duedate);
-                                                commandInsert.Parameters.AddWithValue("@topic", topic);
-                                                commandInsert.Parameters.AddWithValue("@fileName", fileName);
-                                                commandInsert.Parameters.AddWithValue("@fileType", fileType);
-                                                commandInsert.Parameters.AddWithValue("@fileData", fileData);
-                                                commandInsert.Parameters.AddWithValue("@teachername", teacherFullName);
+                                        using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
+                                        {
+                                            commandInsert.Parameters.AddWithValue("@roomid", roomId);
+                                            commandInsert.Parameters.AddWithValue("@teacherid", teacherId);
+                                            commandInsert.Parameters.AddWithValue("@teacheremail", teacherEmail);
+                                            commandInsert.Parameters.AddWithValue("@subjectname", subjectname);
+                                            commandInsert.Parameters.AddWithValue("@materialsname", materialsname);
+                                            commandInsert.Parameters.AddWithValue("@instructions", instructions);
+                                            commandInsert.Parameters.AddWithValue("@posttype", posttype);
+                                            commandInsert.Parameters.AddWithValue("@points", points);
+                                            commandInsert.Parameters.AddWithValue("@duedate", duedate);
+                                            commandInsert.Parameters.AddWithValue("@topic", topic);
+                                            commandInsert.Parameters.AddWithValue("@fileName", fileName);
+                                            commandInsert.Parameters.AddWithValue("@fileType", fileType);
+                                            commandInsert.Parameters.AddWithValue("@fileData", fileData);
+                                            commandInsert.Parameters.AddWithValue("@teachername", teacherFullName);
 
-                                                commandInsert.ExecuteNonQuery();
 
-                                                ShowSuccessMessage("Your Materials have been successfully posted");
-                                            }
 
-                                            ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
-                                            DisplayMaterials();
+
+
+                                            commandInsert.ExecuteNonQuery();
+
+                                            ShowSuccessMessage("Your Materials have been successfully posted");
                                         }
-                                    
+
+                                        ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
+                                        DisplayMaterials();
+                                    }
+
                                     catch (Exception ex)
                                     {
                                         // Handle file upload error
                                         ShowErrorMessage("Error uploading file: " + ex.Message);
                                     }
+
                                 }
+                                else
+                                {
+                                    try
+                                    {
+                                        string fileName = Path.GetFileName(file.FileName);
+                                        string fileType = Path.GetExtension(file.FileName);
+                                        byte[] fileData = file.FileBytes;
+
+
+
+                                        string insertQuery = "INSERT INTO learningmaterials (roomid, teacherid, teacheremail, subjectname, materialsname, instructions, posttype, points, duedate, topic, teachername) " +
+                                                             "VALUES (@roomid, @teacherid, @teacheremail, @subjectname, @materialsname, @instructions, @posttype, @points, @duedate, @topic, @teachername)";
+
+                                        using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
+                                        {
+                                            commandInsert.Parameters.AddWithValue("@roomid", roomId);
+                                            commandInsert.Parameters.AddWithValue("@teacherid", teacherId);
+                                            commandInsert.Parameters.AddWithValue("@teacheremail", teacherEmail);
+                                            commandInsert.Parameters.AddWithValue("@subjectname", subjectname);
+                                            commandInsert.Parameters.AddWithValue("@materialsname", materialsname);
+                                            commandInsert.Parameters.AddWithValue("@instructions", instructions);
+                                            commandInsert.Parameters.AddWithValue("@posttype", posttype);
+                                            commandInsert.Parameters.AddWithValue("@points", points);
+                                            commandInsert.Parameters.AddWithValue("@duedate", duedate);
+                                            commandInsert.Parameters.AddWithValue("@topic", topic);
+                                            commandInsert.Parameters.AddWithValue("@teachername", teacherFullName);
+
+
+
+
+
+                                            commandInsert.ExecuteNonQuery();
+
+                                            ShowSuccessMessage("Your Materials have been successfully posted");
+                                        }
+
+                                        ClientScript.RegisterStartupScript(this.GetType(), "successMessage", "showSuccessMessage();", true);
+                                        DisplayMaterials();
+                                    }
+
+                                    catch (Exception ex)
+                                    {
+                                        ShowErrorMessage("Error uploading file: " + ex.Message);
+                                    }
+
+
+                                }
+
                             }
                         }
                     }

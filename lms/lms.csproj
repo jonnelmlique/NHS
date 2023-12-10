@@ -285,6 +285,7 @@
     <Content Include="Professor\professorMasterPage.Master" />
     <Content Include="Professor\ImageHandler.ashx" />
     <Content Include="Professor\instructorClassRoom.Master" />
+    <Content Include="Professor\FileHandler.ashx" />
     <None Include="Resources\Novaliches High School Cover Picture.jpg" />
     <None Include="Resources\Novaliches Senior High School.png" />
     <Content Include="Professor\DashBoard.aspx" />
@@ -631,6 +632,9 @@
     <Compile Include="Professor\ArchiveConfirmation.aspx.designer.cs">
       <DependentUpon>ArchiveConfirmation.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Professor\FileHandler.ashx.cs">
+      <DependentUpon>FileHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Professor\Grades.aspx.cs">
       <DependentUpon>Grades.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -944,6 +948,9 @@
     <Compile Include="Student\Classworks.aspx.designer.cs">
       <DependentUpon>Classworks.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Student\FileHandler.ashx.cs">
+      <DependentUpon>FileHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Student\ImageHandler.ashx.cs">
       <DependentUpon>ImageHandler.ashx</DependentUpon>
     </Compile>
@@ -1045,6 +1052,7 @@
     <Content Include="Student\studentMasterPage.Master" />
     <Content Include="Student\ImageHandler.ashx" />
     <Content Include="Student\classroomMasterPage.Master" />
+    <Content Include="Student\FileHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

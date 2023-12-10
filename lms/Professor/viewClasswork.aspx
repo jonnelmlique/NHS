@@ -53,11 +53,16 @@
 
 
 
-                        <asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvFiles_SelectedIndexChanged" CssClass="gridview">
+                        <asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" CssClass="gridview">
                             <Columns>
                                 <asp:BoundField DataField="materialsId" HeaderText="File ID" SortExpression="materialsId" ReadOnly="True" HeaderStyle-CssClass="hide-column" ItemStyle-CssClass="hide-column" />
                                 <asp:BoundField DataField="FileName" HeaderText="File Name" SortExpression="FileName" ReadOnly="True" HeaderStyle-CssClass="hide-column" />
-                                <asp:CommandField ShowSelectButton="True" SelectText="Download" HeaderStyle-CssClass="hide-column" />
+<%--                                <asp:CommandField ShowSelectButton="True" SelectText="Download" HeaderStyle-CssClass="hide-column" />--%>
+                                <asp:TemplateField HeaderText="View" HeaderStyle-CssClass="hide-column">
+                                    <ItemTemplate>
+                                        <a href='<%# $"FileHandler.ashx?materialsId={Eval("materialsId")}" %>' target="_blank">View</a>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
 
@@ -132,7 +137,7 @@
                 </div>
                 <div class="work-list">
 
-                    <asp:GridView ID="gvwork" runat="server" AutoGenerateColumns="False" CssClass="gridview1" OnSelectedIndexChanged="gvwork_SelectedIndexChanged">
+                    <asp:GridView ID="gvwork" runat="server" AutoGenerateColumns="False" CssClass="gridview1">
                         <Columns>
 
                             <asp:BoundField DataField="materialsId" HeaderText="File ID" SortExpression="materialsId" ReadOnly="True" HeaderStyle-CssClass="hide-column" ItemStyle-CssClass="hide-column" />
@@ -140,7 +145,11 @@
                             <asp:BoundField DataField="studentname" HeaderText="Student Name" SortExpression="StudentName" ReadOnly="True" HeaderStyle-CssClass="hide-column" />
                             <asp:BoundField DataField="studentworkid" HeaderText="File ID" SortExpression="materialsId" ReadOnly="True" HeaderStyle-CssClass="hide-column" ItemStyle-CssClass="hide-column" />
 
-
+                            <asp:TemplateField HeaderText="View" HeaderStyle-CssClass="hide-column">
+                                <ItemTemplate>
+                                    <a href='<%# $"FileHandler.ashx?materialsId={Eval("materialsId")}" %>' target="_blank">View</a>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:CommandField ShowSelectButton="True" SelectText="Download" HeaderStyle-CssClass="hide-column" />
 
                             <asp:TemplateField HeaderText="Grade" HeaderStyle-CssClass="hide-column">
@@ -154,29 +163,29 @@
                         </Columns>
                     </asp:GridView>
 
-                      </div>
-
                 </div>
-                <div class="not-submitted">
-                    <div class="works">
-                        <h2>Assigned</h2>
-                        <span></span>
-                    </div>
-                    <div class="work-list">
 
-
-                        <asp:GridView ID="gvpeople" runat="server" AutoGenerateColumns="False" CssClass="gridview" OnSelectedIndexChanged="gvpeople_SelectedIndexChanged">
-                            <Columns>
-                                <asp:BoundField DataField="studentemail" HeaderText="Student Name" SortExpression="StudentName" ReadOnly="True" HeaderStyle-CssClass="hide-column" />
-
-                            </Columns>
-                        </asp:GridView>
-
-
-                    </div>
-
-                </div>
-          
             </div>
+            <div class="not-submitted">
+                <div class="works">
+                    <h2>Assigned</h2>
+                    <span></span>
+                </div>
+                <div class="work-list">
+
+
+                    <asp:GridView ID="gvpeople" runat="server" AutoGenerateColumns="False" CssClass="gridview" OnSelectedIndexChanged="gvpeople_SelectedIndexChanged">
+                        <Columns>
+                            <asp:BoundField DataField="studentemail" HeaderText="Student Name" SortExpression="StudentName" ReadOnly="True" HeaderStyle-CssClass="hide-column" />
+
+                        </Columns>
+                    </asp:GridView>
+
+
+                </div>
+
+            </div>
+
         </div>
+    </div>
 </asp:Content>

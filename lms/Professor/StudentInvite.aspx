@@ -20,10 +20,10 @@
                 </div>
                 <div class="invite-room-list">
                     <div class="search-list">
-                        <div class="search-student">
+                       <%-- <div class="search-student">
                                <asp:TextBox ID="TextBox1" runat="server" CssClass="text-search" placeholder="Search student" AutoPostBack="True" OnTextChanged="TextBox1_TextChanged" ></asp:TextBox>
                                <i class="fas fa-search"></i>
-                          </div>
+                          </div>--%>
                          <div class="subj-name">
                             <span>Subject Name : </span> 
                             <asp:Label ID="Label1" runat="server" Text="Label" CssClass="subject-name"></asp:Label>

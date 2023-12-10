@@ -129,23 +129,23 @@ namespace lms.Professor
                 }
             }
         }
-        protected void gvFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int rowIndex = gvFiles.SelectedIndex;
-            GridViewRow row = gvFiles.Rows[rowIndex];
+        //protected void gvFiles_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    int rowIndex = gvFiles.SelectedIndex;
+        //    GridViewRow row = gvFiles.Rows[rowIndex];
 
-            int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
-            byte[] fileData = RetrieveFileData(selectedFileID);
+        //    int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
+        //    byte[] fileData = RetrieveFileData(selectedFileID);
 
-            if (fileData != null)
-            {
-                Response.Clear();
-                Response.ContentType = "application/octet-stream";
-                Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
-                Response.BinaryWrite(fileData);
-                Response.End();
-            }
-        }
+        //    if (fileData != null)
+        //    {
+        //        Response.Clear();
+        //        Response.ContentType = "application/octet-stream";
+        //        Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
+        //        Response.BinaryWrite(fileData);
+        //        Response.End();
+        //    }
+        //}
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
@@ -393,24 +393,24 @@ namespace lms.Professor
             }
         }
 
-        protected void gvwork_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int rowIndex = gvwork.SelectedIndex;
-            GridViewRow row = gvwork.Rows[rowIndex];
+        //protected void gvwork_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    int rowIndex = gvwork.SelectedIndex;
+        //    GridViewRow row = gvwork.Rows[rowIndex];
 
-            int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
-            byte[] fileData = RetrieveFileData(selectedFileID);
+        //    int selectedFileID = Convert.ToInt32(row.Cells[0].Text);
+        //    byte[] fileData = RetrieveFileData(selectedFileID);
 
-            if (fileData != null)
-            {
-                Response.Clear();
-                Response.ContentType = "application/octet-stream";
-                Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
-                Response.BinaryWrite(fileData);
-                Response.End();
-            }
+        //    if (fileData != null)
+        //    {
+        //        Response.Clear();
+        //        Response.ContentType = "application/octet-stream";
+        //        Response.AddHeader("Content-Disposition", $"attachment; filename={row.Cells[1].Text}");
+        //        Response.BinaryWrite(fileData);
+        //        Response.End();
+        //    }
 
-        }
+        //}
 
         protected void gvpeople_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -423,7 +423,9 @@ namespace lms.Professor
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT studentemail FROM invitation WHERE roomid = @roomid AND status = 'Accepted'";
+                //string query = "SELECT studentemail FROM invitation WHERE roomid = @roomid AND status = 'Accepted'";
+                string query = "SELECT studentemail FROM StudentWorkAndInvitationView WHERE roomid = @roomid AND invitationstatus = 'Accepted' AND (workstatus = 'Not Applicable' OR workstatus IS NULL)";
+
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
 

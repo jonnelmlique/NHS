@@ -39,8 +39,7 @@
                 <div class="points-date">
                     <asp:Label ID="lblpoints" runat="server" Text="" CssClass="span"></asp:Label>'
 
-                  <asp:Label ID="lblstatus" runat="server" Text="" CssClass="span"></asp:Label>'
-                    <asp:Label ID="lblgradepoints" runat="server" Text="" CssClass="span"></asp:Label>'
+               
 
               <asp:Label ID="lbldue" runat="server" Text="" CssClass="span"></asp:Label>
 
@@ -55,12 +54,18 @@
                 </div>
                 <div class="file">
                     <div class="files">
-                
-                        <asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvFiles_SelectedIndexChanged" CssClass="gridview">
+
+                        <asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" CssClass="gridview">
                             <Columns>
                                 <asp:BoundField DataField="materialsId" HeaderText="File ID" SortExpression="materialsId" ReadOnly="True" HeaderStyle-CssClass="hide-column" ItemStyle-CssClass="hide-column" />
                                 <asp:BoundField DataField="FileName" HeaderText="File Name" SortExpression="FileName" ReadOnly="True" HeaderStyle-CssClass="hide-column" />
-                                <asp:CommandField ShowSelectButton="True" SelectText="Download" HeaderStyle-CssClass="hide-column" />
+                                <%--                                <asp:CommandField ShowSelectButton="True" SelectText="Download" HeaderStyle-CssClass="hide-column" />--%>
+                                <asp:TemplateField HeaderText="View" HeaderStyle-CssClass="hide-column">
+                                    <ItemTemplate>
+                                        <a href='<%# $"FileHandler.ashx?materialsId={Eval("materialsId")}" %>' target="_blank">View</a>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
                             </Columns>
                         </asp:GridView>
 
@@ -70,9 +75,9 @@
             </div>
             <div class="comments">
                 <div class="class-comments">
-                    <i class="fas fa-users"></i> 
-                       <asp:Label ID="classCommentCountLabel" runat="server" Text='<%# Eval("CommentCount") %>' CssClass="lbl-comment"></asp:Label>
-                    <span> Class comments </span>
+                    <i class="fas fa-users"></i>
+                    <asp:Label ID="classCommentCountLabel" runat="server" Text='<%# Eval("CommentCount") %>' CssClass="lbl-comment"></asp:Label>
+                    <span>Class comments </span>
                 </div>
                 <div class="comment-list">
 
@@ -88,15 +93,15 @@
                                             <div class="info">
                                                 <div class="name">
                                                     <h3><%# Eval("name") %></h3>
-                                            
+
                                                     <span><%# Eval("datepost") %></span>
                                                 </div>
-                                                  <div class="announcement-body">
-                                                       <p><%# Eval("commentpost") %></p>
-                                                 </div>
+                                                <div class="announcement-body">
+                                                    <p><%# Eval("commentpost") %></p>
+                                                </div>
                                             </div>
                                         </div>
-                                      
+
                                     </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -129,10 +134,12 @@
             <div class="my-works">
                 <div class="works">
                     <h2>Your Work</h2>
+                       <asp:Label ID="lblstatus" runat="server" Text="" CssClass="span"></asp:Label>'
+     <asp:Label ID="lblgradepoints" runat="server" Text="" CssClass="span"></asp:Label>'
                     <%--<span>Turned in</span>--%>
                 </div>
                 <div class="work-list">
-                     <asp:GridView ID="gvwork" runat="server" AutoGenerateColumns="False" CssClass="gridview" OnRowCommand="gvwork_RowCommand">
+                    <asp:GridView ID="gvwork" runat="server" AutoGenerateColumns="False" CssClass="gridview" OnRowCommand="gvwork_RowCommand">
                         <Columns>
                             <asp:BoundField DataField="materialsId" HeaderText="File ID" SortExpression="studentworkid" ReadOnly="True" HeaderStyle-CssClass="hide-column" ItemStyle-CssClass="hide-column" />
 
@@ -150,8 +157,8 @@
                 <div class="submit-btn">
                     <asp:FileUpload ID="file" runat="server" CssClass="work-btn" />
 
-                      <asp:Button ID="Button1" runat="server" Text="Add Classwork" CssClass="work-btn" OnClick="Button1_Click"/>
-                    <asp:Button ID="btnmarkasdone" runat="server" Text="Mark as done" CssClass="work-btn" OnClientClick="toggleDivs(); return false;" />
+                    <asp:Button ID="Button1" runat="server" Text="Add Classwork" CssClass="work-btn" OnClick="Button1_Click" />
+<%--                    <asp:Button ID="btnmarkasdone" runat="server" Text="Mark as done" CssClass="work-btn" OnClientClick="toggleDivs(); return false;" />--%>
                 </div>
                 <div class="submit-btn2">
                     <asp:Button ID="Button2" runat="server" Text="Unsubmit" CssClass="work-btn" OnClientClick="toggleDivs(); return false;" />
@@ -161,45 +168,45 @@
 
     </div>
 
-     <script>
-         function toggleDivs() {
-             var div1 = document.querySelector('.submit-btn');
-             var div2 = document.querySelector('.submit-btn2');
-             var downloadButton = document.getElementById('<%= gvwork.ClientID %>_ctl02'); 
+    <script>
+        function toggleDivs() {
+            var div1 = document.querySelector('.submit-btn');
+            var div2 = document.querySelector('.submit-btn2');
+            var downloadButton = document.getElementById('<%= gvwork.ClientID %>_ctl02');
 
-             if (downloadButton) {
-                 downloadButton.disabled = true;
-             }
+            if (downloadButton) {
+                downloadButton.disabled = true;
+            }
 
-     
-             if (div1.style.display !== 'none') {
-                 fadeOut(div1);
-                 setTimeout(function () {
-                     div1.style.display = 'none';
-                     fadeIn(div2);
-                 }, 500);
-             } else {
-                 fadeOut(div2);
-                 setTimeout(function () {
-                     div2.style.display = 'none';
-                     fadeIn(div1);
-                 }, 500);
-             }
-         }
 
-         function fadeIn(element) {
-             element.style.display = 'block';
-             setTimeout(function () {
-                 element.style.opacity = 1;
-             }, 10); 
-         }
+            if (div1.style.display !== 'none') {
+                fadeOut(div1);
+                setTimeout(function () {
+                    div1.style.display = 'none';
+                    fadeIn(div2);
+                }, 500);
+            } else {
+                fadeOut(div2);
+                setTimeout(function () {
+                    div2.style.display = 'none';
+                    fadeIn(div1);
+                }, 500);
+            }
+        }
 
-         function fadeOut(element) {
-             element.style.opacity = 0;
-             setTimeout(function () {
-                 element.style.display = 'none';
-             }, 500); 
-         }
-     </script>
-  
+        function fadeIn(element) {
+            element.style.display = 'block';
+            setTimeout(function () {
+                element.style.opacity = 1;
+            }, 10);
+        }
+
+        function fadeOut(element) {
+            element.style.opacity = 0;
+            setTimeout(function () {
+                element.style.display = 'none';
+            }, 500);
+        }
+    </script>
+
 </asp:Content>

@@ -49,5 +49,14 @@ namespace lms.Professor
             }
         }
 
+        protected void gvgraded_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnprint_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

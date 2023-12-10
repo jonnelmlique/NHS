@@ -9,12 +9,12 @@
     <div class="classwork">
         <div class="class-head">
             <div class="drop-list1">
-                <asp:DropDownList ID="DropDownList1" runat="server" CssClass="d-list">
+            <%--    <asp:DropDownList ID="DropDownList1" runat="server" CssClass="d-list">
                     <asp:ListItem Text="All Topics" Value="1" />
                     <asp:ListItem Text="Assignments" Value="2" />
                     <asp:ListItem Text="Quiz" Value="3" />
                     <asp:ListItem Text="Materials" Value="4" />
-                </asp:DropDownList>
+                </asp:DropDownList>--%>
             </div>
             <div class="drop-list2">
             </div>

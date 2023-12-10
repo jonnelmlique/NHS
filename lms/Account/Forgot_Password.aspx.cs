@@ -99,7 +99,7 @@ namespace lms.Account
                 using (SmtpClient client = new SmtpClient("smtp.gmail.com"))
                 {
                     client.Port = 587;
-                    client.Credentials = new NetworkCredential("novalichesseniorhighschool@gmail.com", "jpscuyqtbmgpkcqw");
+                    client.Credentials = new NetworkCredential("novalichesseniorhighschoolnhs@gmail.com", "kymucdmewcovazly");
                     client.EnableSsl = true;
                     client.Send(message);
                 }
