@@ -85,6 +85,13 @@
                            <a href="Progress.aspx">Progress Tracking</a>
                        </div>
                    </div>
+                    <div class="dropdown">
+                      <button class="dropbtn">LMS</button>
+     <div class="dropdown-content">
+         <a href="../Student/DashBoard.aspx">Go to LMS</a>
+       
+     </div>
+ </div> 
                </div>
            </div>
            <div class="Content">
