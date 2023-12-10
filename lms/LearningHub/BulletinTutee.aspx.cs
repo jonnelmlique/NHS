@@ -50,7 +50,7 @@ namespace lms.LearningHub
                     $"if (!showConnectConfirmation({rid})) return;", true);
             }
 
-            string connectionString = "Server=localhost;Database=learninghubwebdb;User=root;Password=;";
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -74,7 +74,7 @@ namespace lms.LearningHub
 
         private void BindDataToRepeater()
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;User=root;Password=;";
+            string connectionString = "Server=localhost;Database=learninghub;User=root;Password=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -85,7 +85,7 @@ namespace lms.LearningHub
                 List<string> selectedAvailability = GetSelectedCheckboxes("availGroup");
                 List<string> selectedLocations = GetSelectedCheckboxes("locGroup");
 
-                string query = "SELECT b.rid, u.uid, u.name, u.pfp, b.looking, b.strand, b.availability, b.location FROM bulletin b JOIN users u ON b.uid = u.uid WHERE b.looking = 'Tutee' AND b.visibility = ''";
+                string query = "SELECT b.rid, u.uid, u.name, u.ImageName, b.looking, b.strand, b.availability, b.location FROM bulletin b JOIN student_info u ON b.uid = u.uid WHERE b.looking = 'Tutee' AND b.visibility = ''";
 
                 if (!string.IsNullOrEmpty(selectedStrand))
                 {
@@ -192,7 +192,6 @@ namespace lms.LearningHub
                     }
                 }
             }
-
             return selectedCheckboxes;
         }
         protected void Clear_Click(object sender, EventArgs e)

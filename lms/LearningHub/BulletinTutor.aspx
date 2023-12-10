@@ -162,13 +162,13 @@
                              <td class="Cards">
                                  <div class="CardDiv">
                                      <div class="CardImage">
-                                         <asp:Image ID="CardDPImage" runat="server" ImageUrl='<%# GetDirectLinkFromGoogleDrive(Eval("pfp").ToString()) %>' CssClass="CardDP" />
+                                         <asp:Image ID="CardDPImage" runat="server" ImageUrl='<%# GetDirectLinkFromGoogleDrive(Eval("ImageName").ToString()) %>' CssClass="CardDP" />
                                          <br />
                                          <br />
 
                                          <asp:HiddenField ID="HiddenRid" runat="server" Value='<%# Eval("rid") %>' />
                                                 <asp:Button ID="MoreButton" runat="server" Text="More" class="MoreButton" CssClass="more-button"
-                                                 data-pfp='<%# GetDirectLinkFromGoogleDrive(Eval("pfp").ToString()) %>'
+                                                 data-pfp='<%# GetDirectLinkFromGoogleDrive(Eval("ImageName").ToString()) %>'
                                                  data-name='<%# Eval("name") %>'
                                                  data-looking='<%# Eval("looking") %>'
                                                  data-strand='<%# Eval("strand") %>'

@@ -42,7 +42,7 @@ namespace lms.LearningHub
         }
         protected void BindProgressGridView()
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
             string uid = Session["UID"].ToString();
             int sessionKey = Convert.ToInt32(Session["SessionKey"]);
 
@@ -58,16 +58,16 @@ namespace lms.LearningHub
                     query = "SELECT t.tid AS TransactionID, " +
                             "CASE WHEN b.role = 'Tutor' THEN ut.name ELSE tutor.name END AS TuteeName, " +
                             "CASE WHEN b.role = 'Tutee' THEN ut.name ELSE tutor.name END AS TutorName, " +
-                            "CASE WHEN b.role = 'Tutor' THEN ut.studid ELSE tutor.studid END AS TuteeStudentID, " +
-                            "CASE WHEN b.role = 'Tutee' THEN ut.studid ELSE tutor.studid END AS TutorStudentID, " +
+                            "CASE WHEN b.role = 'Tutor' THEN ut.studentId ELSE tutor.studid END AS TuteeStudentID, " +
+                            "CASE WHEN b.role = 'Tutee' THEN ut.studentId ELSE tutor.studid END AS TutorStudentID, " +
                             "b.yearlevel AS TuteeYearLevel, b.strand AS TuteeStrand, " +
                             "b.availability AS TutorAvailability, b.location AS TutorLocation, " +
                             "t.days, " +
                             "t.progress " +
                             "FROM transaction t " +
                             "INNER JOIN bulletin b ON t.requestor = b.rid OR t.client = b.rid " +
-                            "INNER JOIN users ut ON t.client = ut.uid " +
-                            "LEFT JOIN users tutor ON b.uid = tutor.uid";
+                            "INNER JOIN student_info ut ON t.client = ut.uid " +
+                            "LEFT JOIN student_info tutor ON b.uid = tutor.uid";
                 }
                 else
                 {
@@ -75,16 +75,16 @@ namespace lms.LearningHub
                     query = "SELECT t.tid AS TransactionID, " +
                             "CASE WHEN b.role = 'Tutor' THEN ut.name ELSE tutor.name END AS TuteeName, " +
                             "CASE WHEN b.role = 'Tutee' THEN ut.name ELSE tutor.name END AS TutorName, " +
-                            "CASE WHEN b.role = 'Tutor' THEN ut.studid ELSE tutor.studid END AS TuteeStudentID, " +
-                            "CASE WHEN b.role = 'Tutee' THEN ut.studid ELSE tutor.studid END AS TutorStudentID, " +
+                            "CASE WHEN b.role = 'Tutor' THEN ut.studentId ELSE tutor.studentId END AS TuteeStudentID, " +
+                            "CASE WHEN b.role = 'Tutee' THEN ut.studentId ELSE tutor.studentId END AS TutorStudentID, " +
                             "b.yearlevel AS TuteeYearLevel, b.strand AS TuteeStrand, " +
                             "b.availability AS TutorAvailability, b.location AS TutorLocation, " +
                             "t.days, " +
                             "t.progress " +
                             "FROM transaction t " +
                             "INNER JOIN bulletin b ON t.requestor = b.rid OR t.client = b.rid " +
-                            "INNER JOIN users ut ON t.client = ut.uid " +
-                            "LEFT JOIN users tutor ON b.uid = tutor.uid " +
+                            "INNER JOIN student_info ut ON t.client = ut.uid " +
+                            "LEFT JOIN student_info tutor ON b.uid = tutor.uid " +
                             "WHERE b.uid = @UID OR t.requestor = @UID OR t.client = @UID";
                 }
 
@@ -117,14 +117,14 @@ namespace lms.LearningHub
         }
         private string GetStudentIDByRID(string rid, string role)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
                 string columnName = role.ToLower() == "tutee" ? "requestor" : "client";
-                string query = $"SELECT studid FROM users WHERE uid = (SELECT {columnName} FROM transaction WHERE tid = @RID)";
+                string query = $"SELECT studentId FROM student_info WHERE uid = (SELECT {columnName} FROM transaction WHERE tid = @RID)";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -135,13 +135,13 @@ namespace lms.LearningHub
         }
         private string GetStudentNameByStudentID(string studentID)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
-                string query = "SELECT name FROM users WHERE studid = @StudentID";
+                string query = "SELECT name FROM student_info WHERE studentId = @StudentID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -181,7 +181,7 @@ namespace lms.LearningHub
         }
         protected void UpdateProgressToComplete(string tid)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -265,7 +265,7 @@ namespace lms.LearningHub
         }
         private bool IsCurrentUserTutor(string transactionID, string currentUserID)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -292,7 +292,7 @@ namespace lms.LearningHub
         {
             try
             {
-                string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+                string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -388,7 +388,7 @@ namespace lms.LearningHub
         {
             try
             {
-                string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+                string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -471,7 +471,7 @@ namespace lms.LearningHub
         {
             try
             {
-                string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+                string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -592,7 +592,7 @@ namespace lms.LearningHub
         }
         private string GetTransactionDate(string transactionID)
         {
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

@@ -37,9 +37,9 @@ namespace lms.LearningHub
                                "b.yearlevel AS YearLevel, " +
                                "b.availability AS Availability, " +
                                "b.location AS Location " +
-                               "FROM notificationlh n " +
+                               "FROM notification n " +
                                "INNER JOIN bulletin b ON n.Frid = b.rid " +
-                               "INNER JOIN users u ON n.Fuid = u.uid " +
+                               "INNER JOIN student_info u ON n.Fuid = u.uid " +
                                "WHERE b.uid = @UID AND b.role = 'Tutor'";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
@@ -68,7 +68,7 @@ namespace lms.LearningHub
                 string notificationID = e.CommandArgument.ToString();
 
                 int frid = 0;
-                string fridQueryString = "SELECT Frid FROM notificationlh WHERE nid = @NotificationID";
+                string fridQueryString = "SELECT Frid FROM notification WHERE nid = @NotificationID";
 
                 string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
@@ -105,7 +105,7 @@ namespace lms.LearningHub
             {
                 connection.Open();
 
-                string removeQuery = "DELETE FROM notificationlh WHERE nid = @NotificationID";
+                string removeQuery = "DELETE FROM notification WHERE nid = @NotificationID";
                 using (MySqlCommand removeCmd = new MySqlCommand(removeQuery, connection))
                 {
                     removeCmd.Parameters.AddWithValue("@NotificationID", notificationID);
@@ -121,7 +121,7 @@ namespace lms.LearningHub
             {
                 connection.Open();
 
-                string fetchDetailsQuery = "SELECT Frid, Fuid FROM notificationlh WHERE nid = @NotificationID";
+                string fetchDetailsQuery = "SELECT Frid, Fuid FROM notification WHERE nid = @NotificationID";
 
                 using (MySqlCommand fetchCmd = new MySqlCommand(fetchDetailsQuery, connection))
                 {

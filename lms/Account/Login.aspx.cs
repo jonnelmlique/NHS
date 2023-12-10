@@ -233,31 +233,41 @@ namespace lms.LOGIN
                 conn.Open();
 
                 Session["Role"] = role;
-                Session["LoggedInUser"] = reader.GetString("Email"); // Assuming the email is the username
-                //Session["Name"] = reader.GetString("username");
+                Session["LoggedInUser"] = reader.GetString("Email");
                 Session["ID"] = reader.GetInt32("UserID").ToString();
                 Session["LoggedInUserEmail"] = reader.GetString("Email");
 
                 if (role == "Student")
                 {
-                    MySqlCommand teacherInfoCmd = new MySqlCommand("SELECT * FROM student_info WHERE email = @email", conn);
-                    teacherInfoCmd.Parameters.AddWithValue("@email", Session["LoggedInUserEmail"]);
+                    MySqlCommand academicInfoCmd = new MySqlCommand("SELECT * FROM academicinformation WHERE studentId = @ID", conn);
+                    academicInfoCmd.Parameters.AddWithValue("@ID", Session["ID"]);
 
-                    using (MySqlDataReader studentInfoReader = teacherInfoCmd.ExecuteReader())
+                    using (MySqlDataReader academicInfoReader = academicInfoCmd.ExecuteReader())
                     {
-                        if (studentInfoReader.Read())
+                        if (academicInfoReader.Read())
                         {
-                            Session["studentname"] = studentInfoReader.GetString("name");
-                            Session["studentemail"] = studentInfoReader.GetString("email");
-                            Session["LoggedInUserID"] = studentInfoReader.GetInt32("studentid").ToString();
+                            Session["AcademicInfoID"] = academicInfoReader.GetString("studentId");
+                            Session["AcademicInfoYearLevel"] = academicInfoReader.GetString("yearlevel");
+                        }
+                    }
+                    MySqlCommand studinfoCmd = new MySqlCommand("SELECT * FROM student_info WHERE studentId = @ID", conn);
+                    studinfoCmd.Parameters.AddWithValue("@ID", Session["ID"]);
+
+                    using (MySqlDataReader studinfoReader = studinfoCmd.ExecuteReader())
+                    {
+                        if (studinfoReader.Read())
+                        {
+                            Session["StudentName"] = studinfoReader.GetString("name");
+                            Session["StudentEmail"] = studinfoReader.GetString("Email");
+                            Session["StudentContact"] = studinfoReader.GetString("contact");
+                            Session["UID"] = studinfoReader.GetString("uid");
+                            Session["StudentID"] = studinfoReader.GetString("studentId");
                         }
                     }
                 }
-
                 Response.Redirect(redirectUrl);
             }
         }
-
         private void ShowErrorMessage(string message)
             {
                 string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";

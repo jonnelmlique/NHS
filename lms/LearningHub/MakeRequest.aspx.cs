@@ -14,11 +14,12 @@ namespace lms.LearningHub
         {
             if (!IsPostBack)
             {
+                bindImage();
                 if (Session["UID"] != null)
                 {
                     string uidValue = Session["UID"].ToString();
 
-                    string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+                    string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
@@ -26,7 +27,7 @@ namespace lms.LearningHub
 
                         uidValue = Session["UID"].ToString();
 
-                        string query = "SELECT name, yearlevel, age, email, contact, availability, sex, socmed, location, studId, bio, pfp FROM users WHERE uid = @UID";
+                        string query = "SELECT * FROM student_info WHERE uid = @UID";
 
                         using (MySqlCommand command = new MySqlCommand(query, connection))
                         {
@@ -38,19 +39,45 @@ namespace lms.LearningHub
                                 {
                                     string nameValue = reader["name"].ToString();
                                     Name.Text = "Name: " + nameValue;
-                                    SID.Text = "Student ID: " + reader["studId"].ToString();
-                                    Email.Text = "Email: " + reader["email"].ToString();
+                                    SID.Text = "Student ID: " + reader["studentId"].ToString();
+                                    Email.Text = "Email: " + reader["Email"].ToString();
                                     Contact.Text = "Contact Number: " + reader["contact"].ToString();
-                                    string profilePictureLink = reader["pfp"].ToString();
-                                    ImagePF.ImageUrl = GetDirectLinkFromGoogleDrive(profilePictureLink);
+                                    //string profilePictureLink = reader["pfp"].ToString();
+                                    //ImagePF.ImageUrl = GetDirectLinkFromGoogleDrive(profilePictureLink);
                                 }
                             }
                         }
                     }
                 }
-                else
-                {
+            }
+        }
+        private void bindImage()
+        {
+            string uidValue = Session["UID"].ToString();
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string imageQuery = "SELECT imageData FROM tblimages WHERE studentId = @ID;";
+                using (MySqlCommand imageCommand = new MySqlCommand(imageQuery, connection))
+                {
+                    imageCommand.Parameters.AddWithValue("@ID", uidValue);
+                    MySqlDataReader imageReader = imageCommand.ExecuteReader();
+                    if (imageReader.HasRows && imageReader.Read())
+                    {
+                        byte[] imageData = (byte[])imageReader["imageData"];
+                        if (imageData != null && imageData.Length > 0)
+                        {
+                            string base64String = Convert.ToBase64String(imageData);
+                            ImagePF.ImageUrl = "data:image/jpeg;base64," + base64String;
+                        }
+                        else
+                        {
+                            ImagePF.ImageUrl = "../Resources/default.png";
+                        }
+                        imageReader.Close();
+                    }
                 }
             }
         }
@@ -75,14 +102,14 @@ namespace lms.LearningHub
         {
             string uid = Session["UID"].ToString();
 
-            string connectionString = "Server=localhost;Database=learninghubwebdb;Uid=root;Pwd=;";
+            string connectionString = "Server=localhost;Database=learninghub;Uid=root;Pwd=;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
                 string query = "INSERT INTO bulletin (uid, name, looking, strand, yearlevel, availability, location, role, buldate) " +
-                "VALUES (@uid, (SELECT name FROM users WHERE uid = @uid), @looking, @strand, @yearLevel, @availability, @location, @role, CURDATE());";
+                "VALUES (@uid, (SELECT name FROM student_info WHERE uid = @uid), @looking, @strand, @yearLevel, @availability, @location, @role, CURDATE());";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
