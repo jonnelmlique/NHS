@@ -258,9 +258,12 @@ namespace lms.LOGIN
                         if (studinfoReader.Read())
                         {
                             Session["StudentName"] = studinfoReader.GetString("name");
+                            Session["Name"] = studinfoReader    .GetString("name");
                             Session["StudentEmail"] = studinfoReader.GetString("Email");
                             Session["StudentContact"] = studinfoReader.GetString("contact");
                             Session["UID"] = studinfoReader.GetString("uid");
+                            Session["LoggedInUserID"] = studinfoReader.GetInt32("studentid").ToString();
+
                             Session["StudentID"] = studinfoReader.GetString("studentId");
                         }
                     }

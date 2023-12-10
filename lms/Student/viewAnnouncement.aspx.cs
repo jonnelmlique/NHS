@@ -25,16 +25,16 @@ namespace lms.Student
                         DisplayUserProfileImage();
                         DisplayComment();
 
-                        string UserID = Session["LoggedInUserID"] as string;
+                        string studentid = Session["LoggedInUserID"] as string;
 
-                        if (!string.IsNullOrEmpty(UserID))
+                        if (!string.IsNullOrEmpty(studentid))
                         {
                             using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString))
                             {
                                 connection.Open();
-                                GetUserProfileImage(UserID);
+                                GetUserProfileImage(studentid);
 
-                                byte[] profileImageBytes = GetUserProfileImage(UserID);
+                                byte[] profileImageBytes = GetUserProfileImage(studentid);
                                 if (profileImageBytes != null)
                                 {
                                     string base64Image = Convert.ToBase64String(profileImageBytes);
@@ -152,7 +152,7 @@ namespace lms.Student
         //    return null;
         //}
 
-        private byte[] GetUserProfileImage(string UserID)
+        private byte[] GetUserProfileImage(string studentid)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
@@ -162,7 +162,7 @@ namespace lms.Student
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@studentID", UserID);
+                    cmd.Parameters.AddWithValue("@studentID", studentid);
                     connection.Open();
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -268,6 +268,7 @@ namespace lms.Student
                     int studentId = Convert.ToInt32(Session["LoggedInUserID"]);
                     string studentemail = Session["LoggedInUserEmail"].ToString();
                     string UserID = Session["LoggedInUserID"] as string;
+                    string studentid = Session["LoggedInUserID"].ToString();
 
                     string commentpost = txtcomment.Text;
 
@@ -298,7 +299,7 @@ namespace lms.Student
                                             string fullname = nameReader["name"].ToString();
                                             nameReader.Close();
 
-                                            byte[] imageData = GetUserProfileImage(UserID);
+                                            byte[] imageData = GetUserProfileImage(studentid);
 
                                             string insertQuery = "INSERT INTO comment (announcementid, roomid, teacheremail, studentemail, name, profileimage, commentpost, datepost) " +
                                                                  "VALUES (@announcementid, @roomid,  @teacheremail, @studentemail, @name, @profileimage, @commentpost, @datepost)";
@@ -310,7 +311,7 @@ namespace lms.Student
                                                 commandInsert.Parameters.AddWithValue("@teacheremail", teacheremail);
                                                 commandInsert.Parameters.AddWithValue("@studentemail", studentemail);
                                                 commandInsert.Parameters.AddWithValue("@name", fullname);
-                                                byte[] profileImage = GetUserProfileImage(UserID);
+                                                byte[] profileImage = GetUserProfileImage(studentid);
                                                 commandInsert.Parameters.AddWithValue("@profileimage", profileImage);
                                                 commandInsert.Parameters.AddWithValue("@commentpost", commentpost);
                                                 commandInsert.Parameters.AddWithValue("@datepost", currentDate);
