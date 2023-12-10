@@ -139,6 +139,42 @@ namespace lms.Student
                 }
             }
         }
+
+        protected void btnUpdateStatus1_Click(object sender, EventArgs e)
+        {
+            {
+                Button btn = (Button)sender;
+                GridViewRow gvr = (GridViewRow)btn.NamingContainer;
+                HiddenField hf = (HiddenField)gvr.FindControl("hfTnIdPkId1");
+                int invitationid = int.Parse(hf.Value);
+
+                string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string updateQuery = "UPDATE invitation SET status = 'Decline' WHERE invitationid = @invitationid";
+
+                    using (MySqlCommand updateCmd = new MySqlCommand(updateQuery, con))
+                    {
+                        updateCmd.Parameters.AddWithValue("@invitationid", invitationid);
+                        int rowsAffected = updateCmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            ShowSuccessMessage("Invitation Status Updated to 'Decline'");
+                            subjectinviteData();
+                        }
+                        else
+                        {
+                            ShowErrorMessage("Failed to update invitation Decline");
+                            subjectinviteData();
+                        }
+                    }
+                }
+            }
+        }
         private void ShowErrorMessage(string message)
             {
                 string script = $"Swal.fire({{ icon: 'error', text: '{message}' }})";

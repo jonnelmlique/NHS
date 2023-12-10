@@ -45,6 +45,18 @@
                     <asp:Button ID="btnUpdateStatus" runat="server" Text="Accept" CssClass="action-btn" OnClick="btnUpdateStatus_Click"   />
                 </itemtemplate>
             </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="" ItemStyle-Width="140px">
+
+    <itemtemplate>
+        <asp:DropDownList ID="ddlProcess1" runat="server" style="display: none" CssClass="action-btn">
+            <asp:ListItem Text="Decline" Value="Decline" ></asp:ListItem>
+        </asp:DropDownList>
+        <asp:HiddenField ID="hfTnIdPkId1" runat="server" Value='<%# Eval("invitationid") %>'  />
+        <asp:Button ID="btnUpdateStatus1" runat="server" Text="Decline" CssClass="action-btn" OnClick="btnUpdateStatus1_Click"   />
+    </itemtemplate>
+</asp:TemplateField>
+
         </columns>
     </asp:GridView>
 </div>

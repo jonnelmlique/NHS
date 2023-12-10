@@ -46,15 +46,12 @@ namespace lms.Account
 
                             if (rowsAffected > 0)
                             {
-                                string resetLink = $"https://localhost:44304/Account/Reset_Password.aspx?table={tableName}&token={token}";
+                                string resetLink = $"https://762f-175-176-23-34.ngrok-free.app/Account/Reset_Password.aspx?table={tableName}&token={token}";
                                 SendPasswordResetEmail(Email, resetLink);
-                                ShowSuccessMessage("Password reset link sent to your email.");
-                                txtemail.Text = "";
+                              
                             }
-                            //else
-                            //{
-                            //    ShowErrorMessage("Email not found");
-                            //}
+                            ShowSuccessMessage("Password reset link sent to your email.");
+                            txtemail.Text = "";
                         }
                     }
                 }
@@ -89,7 +86,7 @@ namespace lms.Account
 
         private void SendPasswordResetEmail(string toEmail, string resetLink)
         {
-            using (MailMessage message = new MailMessage("novalichesseniorhighschool@gmail.com", toEmail))
+            using (MailMessage message = new MailMessage("novalichesseniorhighschoolnhs@gmail.com", toEmail))
             {
                 message.Subject = "Password Reset at Novaliches Senior High School LMS";
                 message.Body = "To reset your password, click on the following link: " + resetLink;

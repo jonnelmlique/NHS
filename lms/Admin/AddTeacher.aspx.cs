@@ -236,7 +236,11 @@ namespace lms.Admin
 
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
             smtpClient.Port = 587;
+<<<<<<< Updated upstream
             smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschoolnhs@gmail.com", "kymucdmewcovazly");
+=======
+            smtpClient.Credentials = new NetworkCredential("novalichesseniorhighschoolnhs@gmail.com", "jpscuyqtbmgpkcqw");     
+>>>>>>> Stashed changes
             smtpClient.EnableSsl = true;
 
             try
