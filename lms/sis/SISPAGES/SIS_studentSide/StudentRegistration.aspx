@@ -361,7 +361,7 @@
                     </div>
                 </div>
     <span>@Nova SIS</span>
-</div>
+    </div>
            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="regFormDownloadPdfBtn">Download</button>

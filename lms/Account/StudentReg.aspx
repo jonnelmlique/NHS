@@ -11,11 +11,13 @@
  <link rel="stylesheet" href="../CSS/myAccountProf.css" />
     <link rel="stylesheet" href="../CSS/Announce.css" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"/>   
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
- <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
      
     <style>
     .Grid {
@@ -241,16 +243,12 @@
       </div>
   </div>
          </div>
-
-        
-     
-       
-  
      
          </main>
 </div>
-        
+  
   <div class="link" id="regFormModal">
+       <div id="regFormModalContent">
         <div class="sy">
             <p>2022- 2023</p>
         </div>
@@ -275,7 +273,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P1"></p>
+                <p runat="server" style="text-transform:capitalize" id="RegFormName"></p>
             </div>
         </div>
 
@@ -285,7 +283,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P2"></p>
+                <p style="text-transform:capitalize" runat="server" id="RegFormStrand"></p>
             </div>
         </div>
 
@@ -295,7 +293,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P3"></p>
+                <p runat="server" style="text-transform:capitalize" id="RegFormAdmissionStatus"></p>
             </div>
         </div>
 
@@ -305,7 +303,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P4"></p>
+                <p runat="server"id="RegFormSchoolYear"></p>
             </div>
         </div>
     </div>
@@ -317,7 +315,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P5"></p>
+                <p runat="server" id="RegFormStudID"></p>
             </div>
         </div>
 
@@ -327,7 +325,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P6"></p>
+                <p runat="server" id="RegFormYear"></p>
             </div>
         </div>
 
@@ -337,7 +335,7 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P7"></p>
+                <p runat="server" style="text-transform:capitalize" id="RegFormSection"></p>
             </div>
         </div>
 
@@ -347,12 +345,12 @@
             </div>
 
             <div class="data">
-                <p runat="server" id="P8"></p>
+                <p runat="server" id="RegFormCurrentSemester"></p>
             </div>
         </div>
     </div>
 </div>
-                   <div class="datagrid1">
+    <div class="datagrid1">
     <h3>Enlisted Subjects</h3>       
     <div class="gridContainer1 mb-4">
         <asp:GridView CssClass="Grid" ID="Regformview" runat="server" CellPadding="40" ForeColor="#333333" GridLines="None" Height="148px" Width="100%" SelectedRowStyle-BackColor="#6666FF"
@@ -372,116 +370,17 @@
             <SortedDescendingHeaderStyle BackColor="#4870BE" />
         </asp:GridView>
     </div>
+    </div>
 </div>
       <div class="form-btn">
            <button type="button" class="buttons-form" id="regFormDownloadPdfBtn">Download</button>
-           <asp:Button ID="Button4" runat="server" Text="Cancel" CssClass="buttons-form" />
+           <asp:Button ID="Button4" runat="server" Text="Cancel" CssClass="buttons-form"/>
            
       </div>
 
  </div>
 
  <div id="bg-blur"></div>
-<%--<div class="modal fade" id="regFormModal1" tabindex="-1" role="dialog" aria-labelledby="regFormModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-<div class="modal-body" id="regFormModalContent">
-     <p id="RegFormSchoolYear" class="text-right"></p>
-    <div class="d-flex align-content-center justify-content-center">
-        <img src="Resources/NH-LOGO.png" width="100px"/>
-        <h2 class="modal-title mt-4 mx-3 text-lg-center lh-sm" id="regFormModalLabel">
-            Novaliches High School<br />
-             <b style="font-size:20px;">
-                Student Registration<br/>
-                <span class="text-lg-center" style="font-size:15px;font-weight:500">
-                    TS Cruz Subdivision, 1 Lakandula, Novaliches,<br /> Quezon City, Metro Manila
-                </span>
-            </b>
-            <br/>
-         
-        </h2>
-        <img src="Resources/NH-LOGO.png" width="100px" style="margin-right:30px" />
-    </div>
-       <hr/>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="border border-dashed p-0 mb-1">
-                    <p class="mb-0 opacity-75"><b>Name</b></p>
-                    <p class="text-center" id="RegFormName"></p>
-                </div>
-            </div>
-            <div class="col-md-3 mb-1">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Student No.</b></p>
-                    <p class="text-center"  id="RegFormStudID"></p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-1">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Program</b></p>
-                    <p class="text-center"  id="RegFormStrand"></p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Status</b></p>
-                    <p class="text-center"  id="RegFormAdmissionStatus"></p>
-                </div>
-            </div>
-            <div class="col-md-3 mb-1">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Grade</b></p>
-                    <p class="text-center" id="RegFormYear"></p>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Semester</b></p>
-                    <p class="text-center"  id="RegFormCurrentSemester"></p>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="border border-dashed p-0">
-                    <p class="mb-0 opacity-75"><b>Section</b></p>
-                    <p class="text-center"  id="RegFormSection"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-        <div class="d-block mt-4">
-                    <h3>Enlisted Subjects</h3>
-                    <br />
-                    <div class="gridContainer mb-4">
-                        <asp:GridView CssClass="form" ID="Regformview" runat="server" CellPadding="8" ForeColor="#333333" GridLines="None" Height="148px" Width="100%" SelectedRowStyle-BackColor="#6666FF"
-                            CellSpacing="5" Font-Size="small" HorizontalAlign="Center">
-                            <AlternatingRowStyle BackColor="White" />
-                            <Columns>
-                            </Columns>
-                            <EditRowStyle BackColor="#2461BF" />
-                            <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                            <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                            <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                            <RowStyle BackColor="#EFF3FB" />
-                            <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                            <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                            <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                            <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                            <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                        </asp:GridView>
-                    </div>
-                </div>
-    <span>@Nova SIS</span>
-</div>
-           <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="regFormDownloadPdfBtn">Download</button>
-            </div>
-        </div>
-    </div>
-</div>--%>
     </form>
      <script>
          document.getElementById('regform').addEventListener('click', function (e) {
@@ -499,44 +398,44 @@
              }
          });
      </script>
-    <script>
-        const regformModal = document.getElementById("regform");
-        const regFormModal = document.getElementById("regFormModal");
-        const close = document.getElementById("close");
+   <script>
+       const regformModal = document.getElementById("regform");
+       const regFormModal = document.getElementById("regFormModal");
+       const close = document.getElementById("close");
 
-        function downloadPdf() {
-            const element = document.getElementById("regFormModalContent");
+       function downloadPdf() {
+           const element = document.getElementById("regFormModalContent");
 
-            html2pdf(element, {
-                margin: 10,
-                filename: 'Registration_Form.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            });
-        }
+           html2pdf(element, {
+               margin: 10,
+               filename: 'Registration_Form.pdf',
+               image: { type: 'jpeg', quality: 0.98 },
+               html2canvas: { scale: 2 },
+               jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+           });
+       }
 
-        $(document).ready(function () {
-            $("#regFormDownloadPdfBtn").click(function () {
-                downloadPdf();
-            });
-        });
+       $(document).ready(function () {
+           $("#regFormDownloadPdfBtn").click(function () {
+               downloadPdf();
+           });
+       });
 
-        regformModal.addEventListener("click", () => {
-            document.getElementById("RegFormName").innerText = document.getElementById("StudName").innerText;
-            document.getElementById("RegFormStrand").innerText = document.getElementById("Strand").innerText;
-            document.getElementById("RegFormAdmissionStatus").innerText = document.getElementById("AdmisionStatus").innerText;
-            document.getElementById("RegFormSchoolYear").innerText = document.getElementById("schoolYear").innerText;
-            document.getElementById("RegFormStudID").innerText = document.getElementById("studID").innerText;
-            document.getElementById("RegFormYear").innerText = document.getElementById("year").innerText;
-            document.getElementById("RegFormSection").innerText = document.getElementById("section").innerText;
-            document.getElementById("RegFormCurrentSemester").innerText = document.getElementById("currentSemester").innerText;
-            $(regFormModal).modal('show');
-        });
-        close.addEventListener("click", function () {
-            $(regFormModal).modal('hide');
-        });
-    </script>
+       regformModal.addEventListener("click", () => {
+           document.getElementById("RegFormName").innerText = document.getElementById("StudName").innerText;
+           document.getElementById("RegFormStrand").innerText = document.getElementById("Strand").innerText;
+           document.getElementById("RegFormAdmissionStatus").innerText = document.getElementById("AdmisionStatus").innerText;
+           document.getElementById("RegFormSchoolYear").innerText = document.getElementById("schoolYear").innerText;
+           document.getElementById("RegFormStudID").innerText = document.getElementById("studID").innerText;
+           document.getElementById("RegFormYear").innerText = document.getElementById("year").innerText;
+           document.getElementById("RegFormSection").innerText = document.getElementById("section").innerText;
+           document.getElementById("RegFormCurrentSemester").innerText = document.getElementById("currentSemester").innerText;
+           $(regFormModal).modal('show');
+       });
+       close.addEventListener("click", function () {
+           $(regFormModal).modal('hide');
+       });
+   </script>
       <script>
 
           $(".sub-btn").click(function () {

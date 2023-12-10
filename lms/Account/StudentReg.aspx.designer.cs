@@ -195,76 +195,67 @@ namespace lms.Account
         protected global::System.Web.UI.WebControls.GridView grid;
 
         /// <summary>
-        /// P1 control.
+        /// RegFormName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormName;
 
         /// <summary>
-        /// P2 control.
+        /// RegFormStrand control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P2;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormStrand;
 
         /// <summary>
-        /// P3 control.
+        /// RegFormAdmissionStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P3;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormAdmissionStatus;
 
         /// <summary>
-        /// P4 control.
+        /// RegFormStudID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P4;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormStudID;
 
         /// <summary>
-        /// P5 control.
+        /// RegFormYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P5;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormYear;
 
         /// <summary>
-        /// P6 control.
+        /// RegFormSection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P6;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormSection;
 
         /// <summary>
-        /// P7 control.
+        /// RegFormCurrentSemester control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P7;
-
-        /// <summary>
-        /// P8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl P8;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RegFormCurrentSemester;
 
         /// <summary>
         /// Regformview control.
