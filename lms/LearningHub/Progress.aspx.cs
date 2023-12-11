@@ -441,6 +441,7 @@ namespace lms.LearningHub
                 string tid = ViewState["SelectedTID"].ToString();
 
                 string buttonNumber = columnName.Replace("day", "");
+                UpdateDaysInTransactionTable(tid, buttonNumber);
 
                 string columnValue = RetrieveDayDetailsFromDatabase(tid, columnName);
 
