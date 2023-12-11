@@ -85,7 +85,7 @@ namespace lms.LearningHub
                 List<string> selectedAvailability = GetSelectedCheckboxes("availGroup");
                 List<string> selectedLocations = GetSelectedCheckboxes("locGroup");
 
-                string query = "SELECT b.rid, u.uid, u.name, u.ImageName, b.looking, b.strand, b.availability, b.location FROM bulletin b JOIN student_info u ON b.uid = u.uid WHERE b.looking = 'Tutee' AND b.visibility = ''";
+                string query = "SELECT b.rid, u.uid, u.name, u.ImageName, b.looking, b.strand, b.availability, b.location, u.contact FROM bulletin b JOIN student_info u ON b.uid = u.uid WHERE b.looking = 'Tutee' AND b.visibility = ''";
 
                 if (!string.IsNullOrEmpty(selectedStrand))
                 {
