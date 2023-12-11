@@ -7,10 +7,10 @@
     <style>
         .random {
             display: none;
-        }
-    </style>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="Classroom" runat="server">
+            }
+        </style>
+    </asp:Content>
+    <asp:Content ID="Content2" ContentPlaceHolderID="Classroom" runat="server">
 
     <div class="classwork">
         <div class="class-head">
@@ -81,7 +81,7 @@
                     <asp:TextBox ID="txtmaterialsname" runat="server" CssClass="txt-title" placeholder="Enter Module Name"></asp:TextBox>
                 </div>
                 <div class="instructions">
-                    <asp:Label ID="Label4" runat="server" Text="Instructions:" CssClass="lbl-instruc"></asp:Label>
+                    <asp:Label ID="Label4" runat="server" Text="Instructions or links:" CssClass="lbl-instruc"></asp:Label>
                     <asp:TextBox ID="txtinstructions" runat="server" TextMode="MultiLine" Rows="5" CssClass="txt-instruc" placeholder="Write instructions about the post"></asp:TextBox>
                 </div>
             </div>

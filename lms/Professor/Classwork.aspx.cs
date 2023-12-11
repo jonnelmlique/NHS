@@ -204,7 +204,10 @@ namespace lms.Professor
                                             commandInsert.Parameters.AddWithValue("@instructions", instructions);
                                             commandInsert.Parameters.AddWithValue("@posttype", posttype);
                                             commandInsert.Parameters.AddWithValue("@points", points);
-                                            commandInsert.Parameters.AddWithValue("@duedate", duedate);
+                                         
+                                            
+                                                commandInsert.Parameters.AddWithValue("@duedate", duedate);
+                                            
                                             commandInsert.Parameters.AddWithValue("@topic", topic);
                                             commandInsert.Parameters.AddWithValue("@fileName", fileName);
                                             commandInsert.Parameters.AddWithValue("@fileType", fileType);
@@ -241,8 +244,8 @@ namespace lms.Professor
 
 
 
-                                        string insertQuery = "INSERT INTO learningmaterials (roomid, teacherid, teacheremail, subjectname, materialsname, instructions, posttype, points, duedate, topic, teachername) " +
-                                                             "VALUES (@roomid, @teacherid, @teacheremail, @subjectname, @materialsname, @instructions, @posttype, @points, @duedate, @topic, @teachername)";
+                                        string insertQuery = "INSERT INTO learningmaterials (roomid, teacherid, teacheremail, subjectname, materialsname, instructions, posttype, points, topic, teachername) " +
+                                                             "VALUES (@roomid, @teacherid, @teacheremail, @subjectname, @materialsname, @instructions, @posttype, @points, @topic, @teachername)";
 
                                         using (MySqlCommand commandInsert = new MySqlCommand(insertQuery, con))
                                         {
@@ -254,7 +257,6 @@ namespace lms.Professor
                                             commandInsert.Parameters.AddWithValue("@instructions", instructions);
                                             commandInsert.Parameters.AddWithValue("@posttype", posttype);
                                             commandInsert.Parameters.AddWithValue("@points", points);
-                                            commandInsert.Parameters.AddWithValue("@duedate", duedate);
                                             commandInsert.Parameters.AddWithValue("@topic", topic);
                                             commandInsert.Parameters.AddWithValue("@teachername", teacherFullName);
 
