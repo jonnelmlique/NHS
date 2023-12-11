@@ -258,7 +258,7 @@ namespace lms.LearningHub
                 string columnValue = RetrieveDayDetailsFromDatabase(tid, columnName);
 
                 bool isColumnEmpty = string.IsNullOrEmpty(columnValue);
-                btnComplete.Visible = isColumnEmpty;
+                btnComplete.Visible = true;
                 btnEdit.Visible = isColumnEmpty;
 
             }
@@ -437,35 +437,28 @@ namespace lms.LearningHub
         {
             if (!string.IsNullOrEmpty(ViewState["SelectedColumnName"] as string) && !string.IsNullOrEmpty(ViewState["SelectedTID"] as string))
             {
-
                 string columnName = ViewState["SelectedColumnName"].ToString();
                 string tid = ViewState["SelectedTID"].ToString();
 
                 string buttonNumber = columnName.Replace("day", "");
 
-
-                UpdateDaysInTransactionTable(tid, buttonNumber);
-
                 string columnValue = RetrieveDayDetailsFromDatabase(tid, columnName);
-
 
                 btnComplete.Visible = string.IsNullOrEmpty(columnValue);
                 btnEdit.Visible = string.IsNullOrEmpty(columnValue);
 
-
                 if (columnName == "day14")
                 {
-
                     UpdateProgressToComplete(tid);
-                }
-                else if (string.IsNullOrEmpty(lblCenter.Text))
-                {
-
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ActionDenied", "alert('Action denied.');", true);
-                    return;
+                    btnComplete.Style["display"] = "none";
                 }
             }
 
+            if (string.IsNullOrEmpty(lblCenter.Text))
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "ActionDenied", "alert('Action denied.');", true);
+                return;
+            }
         }
         protected void UpdateDaysInTransactionTable(string tid, string buttonNumber)
         {
